@@ -22,6 +22,7 @@ import { DeleteIcon, EditIcon } from "../../../assets/icons";
 import CustomDialogDelete from "../../../components/common/CustomDialogDelete";
 import AddKriteria from "../../../components/kriteria/AddKriteria";
 import UpdateKriteria from "../../../components/kriteria/UpdateKriteria";
+import { fetchDataAlternatif } from "../../../store/alternatif/AlternatifData";
 
 const Kriteria = () => {
   const [openAddKriteria, setOpenAddKriteria] = useState(false);
@@ -47,6 +48,7 @@ const Kriteria = () => {
 
   useEffect(() => {
     dispatch(fetchDataKriteria());
+    dispatch(fetchDataAlternatif());
   }, [openAddKriteria, openUpdateKriteria]);
 
   const handleDelete = async () => {
@@ -123,7 +125,7 @@ const Kriteria = () => {
       </Box>
 
       <TableContainer sx={{ mt: 3 }}>
-        <Table aria-label="simple table">
+        <Table size="small" aria-label="simple table">
           <TableHead>
             <TableRow sx={{ background: "#FAFAFA" }}>
               <TableCell align="left">Kode Kriteria</TableCell>

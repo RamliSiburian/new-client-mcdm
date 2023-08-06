@@ -10,6 +10,8 @@ import Kriteria from "./pages/masterData/kriteria";
 import { API, setAuthToken } from "./config/API";
 import Topsis from "./pages/topsis";
 import MOPA from "./pages/mopa";
+import Perbandingan from "./pages/perbandingan";
+import Saw from "./pages/saw";
 
 function App() {
   const navigate = useNavigate();
@@ -24,9 +26,9 @@ function App() {
 
       navigate("/dashboard");
     } catch (error) {
-      if (error.response.data.code === 401) {
-        navigate("/");
-      }
+      navigate("/");
+      // if (error.response.data.code === 401) {
+      // }
     }
   };
 
@@ -37,12 +39,14 @@ function App() {
     <Routes>
       <Route exact path="/" element={<Home />} />
       <Route exact path="/dashboard/" element={<Dashboard />}>
-        {/* <Route exact path=":data-master/" element={<DataMaster />} /> */}
+        <Route index element={<Kriteria />} />
         <Route exact path=":data-master/alternatif" element={<Alternatif />} />
         <Route exact path=":data-master/kriteria" element={<Kriteria />} />
         <Route exact path=":menu/topsis" element={<Topsis />} />
         <Route exact path=":menu/ahp" element={<AHP />} />
         <Route exact path=":menu/mopa" element={<MOPA />} />
+        <Route exact path=":menu/saw" element={<Saw />} />
+        <Route exact path=":menu/perbandingan" element={<Perbandingan />} />
         <Route
           exact
           path="dashboard/*"

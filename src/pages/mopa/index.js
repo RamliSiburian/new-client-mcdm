@@ -18,11 +18,13 @@ import {
   getAllDataKriteria,
 } from "../../store/kriteria/KriteriaDatas";
 import {
+  changeJoinData,
   fetchDataAlternatif,
   getAllDataAlternatifState,
 } from "../../store/alternatif/AlternatifData";
 import { useState } from "react";
 import { PerbandinganBerpasangan } from "../../components/common/PerbandinganBerpasangan";
+import { changeNilaiAkhirMopa } from "../../store/mopa";
 
 const MOPA = () => {
   const dispatch = useDispatch();
@@ -81,29 +83,55 @@ const MOPA = () => {
     return dataKriteria.map((item2, index) => {
       return (
         total[index] +
-        PerbandinganBerpasangan(item.bobot) /
-          PerbandinganBerpasangan(item2.bobot)
+        (item.bobot > item2.bobot
+          ? PerbandinganBerpasangan(
+              (item.bobot + 0.05 - item2.bobot).toFixed(2)
+            )
+          : PerbandinganBerpasangan(0.05)) /
+          (item2.bobot > item.bobot
+            ? PerbandinganBerpasangan(
+                (item2.bobot + 0.05 - item.bobot).toFixed(2)
+              )
+            : PerbandinganBerpasangan(0.05))
       );
     });
   }, new Array(dataKriteria.length).fill(0));
 
-  //   const nilaiRataRata = dataKriteria.reduce((total, item) => {
-  //     return dataKriteria.map((item2, index) => {
-  //       return PerbandinganBerpasangan(item);
-  //     });
-  //   }, new Array(dataKriteria.length).fill(0));
-
   const nilaiRataRata = dataKriteria.map((total, item) => {
     return dataKriteria.map((item2, index) => {
       return Number.isInteger(
-        PerbandinganBerpasangan(total.bobot) /
-          PerbandinganBerpasangan(item2.bobot)
+        (total.bobot > item2.bobot
+          ? PerbandinganBerpasangan(
+              (total.bobot + 0.05 - item2.bobot).toFixed(2)
+            )
+          : PerbandinganBerpasangan(0.05)) /
+          (item2.bobot > total.bobot
+            ? PerbandinganBerpasangan(
+                (item2.bobot + 0.05 - total.bobot).toFixed(2)
+              )
+            : PerbandinganBerpasangan(0.05))
       )
-        ? PerbandinganBerpasangan(total.bobot) /
-            PerbandinganBerpasangan(item2.bobot)
+        ? (total.bobot > item2.bobot
+            ? PerbandinganBerpasangan(
+                (total.bobot + 0.05 - item2.bobot).toFixed(2)
+              )
+            : PerbandinganBerpasangan(0.05)) /
+            (item2.bobot > total.bobot
+              ? PerbandinganBerpasangan(
+                  (item2.bobot + 0.05 - total.bobot).toFixed(2)
+                )
+              : PerbandinganBerpasangan(0.05))
         : (
-            PerbandinganBerpasangan(total.bobot) /
-            PerbandinganBerpasangan(item2.bobot)
+            (total.bobot > item2.bobot
+              ? PerbandinganBerpasangan(
+                  (total.bobot + 0.05 - item2.bobot).toFixed(2)
+                )
+              : PerbandinganBerpasangan(0.05)) /
+            (item2.bobot > total.bobot
+              ? PerbandinganBerpasangan(
+                  (item2.bobot + 0.05 - total.bobot).toFixed(2)
+                )
+              : PerbandinganBerpasangan(0.05))
           ).toFixed(2);
     });
   });
@@ -116,7 +144,7 @@ const MOPA = () => {
     });
   });
 
-  const mapBobot = nilaiRataRata.map((nr, idx) => {
+  const mapBobot = nilaiRataRata?.map((nr, idx) => {
     const result = [];
     return nr.map((value, index) => [...result, value / totalPerKolom[index]]);
   });
@@ -132,8 +160,8 @@ const MOPA = () => {
   const normalisasiCostBenefit = newDataToShow?.map((data) => data.nilai);
   const kodeAlt = newDataToShow?.map((data) => data.kode);
 
-  const cek = kodeAlt.map((row, index) => {
-    return normalisasiCostBenefit.map((col, colIdx) => {
+  const cek = kodeAlt?.map((row, index) => {
+    return normalisasiCostBenefit?.map((col, colIdx) => {
       return row, col;
     });
   });
@@ -159,9 +187,9 @@ const MOPA = () => {
 
   const test = kodeKriteria?.map((kode, idx) => {
     return newData[idx]?.map((item, index) =>
-      highestValue[idx].cost === true
-        ? highestValue[idx].nilai / item
-        : item / highestValue[idx].nilai
+      highestValue[idx]?.cost === true
+        ? highestValue[idx]?.nilai / item
+        : item / highestValue[idx]?.nilai
     );
   });
 
@@ -169,13 +197,33 @@ const MOPA = () => {
     return row?.map((value, index) => value * bobotFinal[idx]);
   });
 
+  const coba = kodeKriteria?.map((kode, idx) =>
+    newData[idx]?.map((item, index) =>
+      highestValue[idx].cost === true
+        ? Number.isInteger(highestValue[idx].nilai / item)
+          ? highestValue[idx].nilai / item
+          : (highestValue[idx].nilai / item).toFixed(2)
+        : Number.isInteger(item / highestValue[idx].nilai)
+        ? item / highestValue[idx].nilai
+        : (item / highestValue[idx].nilai).toFixed(2)
+    )
+  );
+
   const totalCostBenefit = finalResult?.map((subArray) => {
     const sum = subArray?.reduce((acc, curr) => acc + Number(curr), 0);
     return sum;
   });
 
-  console.log({ test });
-  console.log({ bobotFinal });
+  const perangkingan = finalResult[0]?.reduce((result, _, index) => {
+    const sum = finalResult?.reduce((total, arr) => total + arr[index], 0);
+    result.push(sum);
+    return result;
+  }, []);
+
+  useEffect(() => {
+    dispatch(changeJoinData(newDataToShow));
+    dispatch(changeNilaiAkhirMopa(perangkingan));
+  }, [perangkingan, newDataToShow]);
 
   return (
     <Grid container columns={12} spacing={3}>
@@ -189,7 +237,7 @@ const MOPA = () => {
       </Grid>
 
       {/* langkah 1 */}
-      <Grid item xs={12}>
+      <Grid item xs={10}>
         <Box>
           <Typography
             sx={{
@@ -234,7 +282,7 @@ const MOPA = () => {
       </Grid>
 
       {/* langkah 2 */}
-      <Grid item xs={12}>
+      <Grid item xs={10}>
         <Box>
           <Typography
             sx={{
@@ -267,8 +315,17 @@ const MOPA = () => {
                         "1/1"
                       ) : (
                         <>
-                          {PerbandinganBerpasangan(item1.bobot)}/
-                          {PerbandinganBerpasangan(item2.bobot)}
+                          {item1.bobot > item2.bobot
+                            ? PerbandinganBerpasangan(
+                                (item1.bobot + 0.05 - item2.bobot).toFixed(2)
+                              )
+                            : PerbandinganBerpasangan(0.05)}
+                          /
+                          {item2.bobot > item1.bobot
+                            ? PerbandinganBerpasangan(
+                                (item2.bobot + 0.05 - item1.bobot).toFixed(2)
+                              )
+                            : PerbandinganBerpasangan(0.05)}
                         </>
                       )}
                     </TableCell>
@@ -281,7 +338,7 @@ const MOPA = () => {
       </Grid>
 
       {/* langkah 2.1 */}
-      <Grid item xs={12}>
+      <Grid item xs={10}>
         <Box>
           <Typography
             sx={{
@@ -310,19 +367,40 @@ const MOPA = () => {
                   <TableCell>{item1.kode}</TableCell>
                   {dataKriteria.map((item2, index2) => (
                     <TableCell key={item2.kode}>
-                      {/* {index1 === index2 ? "X" : item1.nilai + item2.nilai} */}
                       {Number.isInteger(
-                        PerbandinganBerpasangan(item1.bobot) /
-                          PerbandinganBerpasangan(item2.bobot)
+                        (item1.bobot > item2.bobot
+                          ? PerbandinganBerpasangan(
+                              (item1.bobot + 0.05 - item2.bobot).toFixed(2)
+                            )
+                          : PerbandinganBerpasangan(0.05)) /
+                          (item2.bobot > item1.bobot
+                            ? PerbandinganBerpasangan(
+                                (item2.bobot + 0.05 - item1.bobot).toFixed(2)
+                              )
+                            : PerbandinganBerpasangan(0.05))
                       )
-                        ? PerbandinganBerpasangan(item1.bobot) /
-                          PerbandinganBerpasangan(item2.bobot)
+                        ? (item1.bobot > item2.bobot
+                            ? PerbandinganBerpasangan(
+                                (item1.bobot + 0.05 - item2.bobot).toFixed(2)
+                              )
+                            : PerbandinganBerpasangan(0.05)) /
+                          (item2.bobot > item1.bobot
+                            ? PerbandinganBerpasangan(
+                                (item2.bobot + 0.05 - item1.bobot).toFixed(2)
+                              )
+                            : PerbandinganBerpasangan(0.05))
                         : (
-                            PerbandinganBerpasangan(item1.bobot) /
-                            PerbandinganBerpasangan(item2.bobot)
+                            (item1.bobot > item2.bobot
+                              ? PerbandinganBerpasangan(
+                                  (item1.bobot + 0.05 - item2.bobot).toFixed(2)
+                                )
+                              : PerbandinganBerpasangan(0.05)) /
+                            (item2.bobot > item1.bobot
+                              ? PerbandinganBerpasangan(
+                                  (item2.bobot + 0.05 - item1.bobot).toFixed(2)
+                                )
+                              : PerbandinganBerpasangan(0.05))
                           ).toFixed(2)}
-                      {/* {item1.bobot} */}
-                      {/* {item2.bobot} */}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -331,7 +409,8 @@ const MOPA = () => {
                 <TableCell sx={{ fontWeight: 600 }}>Total</TableCell>
                 {totalPerKolom.map((total, index) => (
                   <TableCell key={index} sx={{ fontWeight: 600 }}>
-                    {Number.isInteger(total) ? total : total.toFixed(2)}
+                    {/* {Number.isInteger(total) ? total : total.toFixed(2)} */}
+                    {Math.round(total)}
                   </TableCell>
                 ))}
               </TableRow>
@@ -341,7 +420,7 @@ const MOPA = () => {
       </Grid>
 
       {/* langkah 2.2 */}
-      <Grid item xs={12}>
+      <Grid item xs={10}>
         <Box>
           <Typography
             sx={{
@@ -373,13 +452,13 @@ const MOPA = () => {
               {mapBobot.map((row, index) => (
                 <TableRow key={index}>
                   {row.flat().map((value, colIndex) => (
-                    <TableCell key={colIndex}>{value.toFixed(5)}</TableCell>
+                    <TableCell key={colIndex}>{value.toFixed(2)}</TableCell>
                   ))}
                   <TableCell sx={{ fontWeight: 600 }}>
-                    {rataRata[index].toFixed(5)}
+                    {rataRata[index].toFixed(2)}
                   </TableCell>
                   <TableCell sx={{ fontWeight: 600 }}>
-                    {(rataRata[index] / totalPerKolom.length).toFixed(5)}
+                    {(rataRata[index] / totalPerKolom.length).toFixed(2)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -389,7 +468,7 @@ const MOPA = () => {
       </Grid>
 
       {/* langkah 3 */}
-      <Grid item xs={12}>
+      <Grid item xs={10}>
         <Box>
           <Typography
             sx={{
@@ -428,7 +507,6 @@ const MOPA = () => {
           </Table>
         </TableContainer>
       </Grid>
-
       {/* langkah 3.1 */}
       <Grid item xs={12}>
         <Box>
@@ -452,7 +530,6 @@ const MOPA = () => {
                   <TableCell key={kode}>{kode}</TableCell>
                 ))}
                 <TableCell>Bobot Awal</TableCell>
-                <TableCell>Kriteria * Bobot</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -471,7 +548,68 @@ const MOPA = () => {
                     </TableCell>
                   ))}
                   <TableCell>{bobotFinal[idx].toFixed(2)}</TableCell>
-                  <TableCell>{totalCostBenefit[idx].toFixed(2)}</TableCell>
+                </TableRow>
+              ))}
+              {/* <TableRow>
+                <TableCell>Total</TableCell>
+                {perangkingan?.map((data) => (
+                  <TableCell>{data.toFixed(2)}</TableCell>
+                ))}
+              </TableRow> */}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+
+      {/* langkah 4 */}
+      <Grid item xs={6}>
+        <Box>
+          <Typography
+            sx={{
+              fontWeight: 500,
+              fontSize: "16px",
+              textDecoration: "underline",
+            }}
+          >
+            Langkah 4 : Perangkingan
+          </Typography>
+        </Box>
+
+        <TableContainer sx={{ mt: 2 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow sx={{ background: "#9D9D9D", fontWeight: 600 }}>
+                <TableCell sx={{ fontWeight: 600 }}>Alternatif</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Hasil Analisis</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {newDataToShow?.map((item, idx) => (
+                <TableRow key={idx} sx={{}}>
+                  <TableCell
+                    align="left"
+                    sx={{
+                      fontWeight:
+                        Math.max(...perangkingan) === perangkingan[idx] && 600,
+                      background:
+                        Math.max(...perangkingan) === perangkingan[idx] &&
+                        "#E9E9E9",
+                    }}
+                  >
+                    {item.kode}
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    sx={{
+                      fontWeight:
+                        Math.max(...perangkingan) === perangkingan[idx] && 600,
+                      background:
+                        Math.max(...perangkingan) === perangkingan[idx] &&
+                        "#E9E9E9",
+                    }}
+                  >
+                    {perangkingan[idx].toFixed(3)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

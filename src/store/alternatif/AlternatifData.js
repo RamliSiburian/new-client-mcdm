@@ -7,6 +7,7 @@ export const dataAlternatifState = createSlice({
     datas: [],
     loading: false,
     nextCode: null,
+    joinData: null,
   },
   reducers: {
     loadData: (state, action) => {
@@ -18,12 +19,16 @@ export const dataAlternatifState = createSlice({
     changeNextCodeAlternatif: (state, action) => {
       state.nextCode = action.payload;
     },
+    changeJoinData: (state, action) => {
+      state.joinData = action.payload;
+    },
   },
 });
 export const {
   loadData,
   changeLoadingDataAlternatif,
   changeNextCodeAlternatif,
+  changeJoinData, 
 } = dataAlternatifState.actions;
 
 export const getAllDataAlternatifState = (state) => state.dataAlternatif;

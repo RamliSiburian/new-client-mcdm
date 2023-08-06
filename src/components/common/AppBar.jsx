@@ -22,18 +22,6 @@ const AppBarComponent = ({ open, setOpen, title }) => {
       }}
     >
       <Toolbar>
-        {isLogin && (
-          <IconButton
-            size="large"
-            edge="start"
-            // color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
-            onClick={() => setOpen(true)}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
 
         {isLogin ? (
           <Typography

@@ -56,8 +56,20 @@ const listMenuItem = [
     subMenu: [],
   },
   {
+    pathName: "/dashboard/menu/saw",
+    title: "SAW",
+    icon: <ChecklistIcon />,
+    subMenu: [],
+  },
+  {
     pathName: "/dashboard/menu/mopa",
     title: "MOPA",
+    icon: <ChecklistIcon />,
+    subMenu: [],
+  },
+  {
+    pathName: "/dashboard/menu/perbandingan",
+    title: "Perbandingan",
     icon: <ChecklistIcon />,
     subMenu: [],
   },
@@ -149,7 +161,6 @@ const Dashboard = () => {
 
   return (
     <Box>
-      <AppBarComponent {...{ open, setOpen }} />
       <Box sx={{ display: "flex" }}>
         <Drawer
           variant="permanent"
@@ -200,8 +211,11 @@ const Dashboard = () => {
             />
           ))}
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Outlet />
+        <Box component="main" sx={{ flexGrow: 1 }}>
+          <AppBarComponent {...{ open, setOpen }} />
+          <Box sx={{ flexGrow: 1, p: 3 }}>
+            <Outlet />
+          </Box>
         </Box>
       </Box>
     </Box>

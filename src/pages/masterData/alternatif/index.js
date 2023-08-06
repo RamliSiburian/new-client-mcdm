@@ -128,7 +128,20 @@ const Alternatif = () => {
     setNewDataToShow(exceptDataArray);
   }, [datas]);
 
-  // console.log({ newDataToShow });
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = newDataToShow?.slice(indexOfFirstPost, indexOfLastPost);
+  const pageNumbers = [];
+  const totalPosts = newDataToShow?.length;
+
+  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <Box>
@@ -185,7 +198,7 @@ const Alternatif = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {newDataToShow?.map((item, idx) => (
+            {currentPosts?.map((item, idx) => (
               <TableRow key={idx} sx={{}}>
                 <TableCell align="left">{item.kode}</TableCell>
                 <TableCell align="left">{item.namaAlternatif}</TableCell>
@@ -213,6 +226,68 @@ const Alternatif = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* pagination */}
+      {datas.length !== 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "0px 16px",
+          }}
+        >
+          <Box>
+            <Typography>
+              Showing {currentPosts?.length} from {newDataToShow?.length} datas
+            </Typography>
+          </Box>
+          <ul
+            style={{
+              display: "flex",
+              gap: 5,
+              textDecoration: "none",
+              listStyleType: "none",
+            }}
+          >
+            {currentPage <= 1 ? (
+              <></>
+            ) : (
+              <li
+                onClick={() =>
+                  currentPage > 1 && setCurrentPage(currentPage - 1)
+                }
+                style={{ cursor: "pointer" }}
+              >
+                prev
+              </li>
+            )}
+            {pageNumbers?.map((number) => (
+              <li
+                key={number}
+                onClick={() => paginate(number)}
+                style={{ color: currentPage === number && "#F33A3A" }}
+              >
+                {number}
+              </li>
+            ))}
+            {currentPage >= pageNumbers.length ? (
+              <></>
+            ) : (
+              <li
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  currentPage < pageNumbers.length &&
+                  setCurrentPage(currentPage + 1)
+                }
+                className="list-pagination"
+              >
+                next
+              </li>
+            )}
+          </ul>
+        </Box>
+      )}
 
       {loading ? (
         <Box
