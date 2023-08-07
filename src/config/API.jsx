@@ -1,6 +1,6 @@
 import axios from "axios";
 export const API = axios.create({
-    baseURL : process.env.RREACT_APP_BASEURL
+    baseURL : process.env.RREACT_APP_BASEURL || 'https://server-mcdm-production.up.railway.app/api/v1/'
     //  || 'http://localhost:5000/api/v1'
 })
 
