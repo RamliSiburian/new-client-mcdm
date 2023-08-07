@@ -158,8 +158,8 @@ const AHP = () => {
     });
   });
 
-  const nilaiRataRataAlt = mapBobot.map((row, index) =>
-    (rataRata[index] / totalPerKolom.length).toFixed(6)
+  const nilaiRataRataAlt = mapBobot.map(
+    (row, index) => rataRata[index] / totalPerKolom.length
   );
 
   // ! ---------------------------------
@@ -201,8 +201,13 @@ const AHP = () => {
 
     return test;
   });
+  const transposeData = (arr) => {
+    return arr[0]?.map((_, colIndex) => arr?.map((row) => row[colIndex]));
+  };
 
-  const totalPerbandinganAltKriteria = cekMapAlt.map((matrix) => {
+  const newCekMapAlt = cekMapAlt?.map((data, idx) => transposeData(data));
+
+  const totalPerbandinganAltKriteria = newCekMapAlt.map((matrix) => {
     return matrix.map((col, colIndex) => {
       return matrix.reduce((acc, row) => {
         return acc + row[colIndex];
@@ -210,21 +215,19 @@ const AHP = () => {
     });
   });
 
-  const transposeData = (arr) => {
-    return arr[0]?.map((_, colIndex) => arr?.map((row) => row[colIndex]));
-  };
-
-  const newCekMapAlt = cekMapAlt?.map((data, idx) => transposeData(data));
-
-  const nilaiEigen = newCekMapAlt?.map((datas, idxAlt) =>
+  const nilaiEigen = cekMapAlt?.map((datas, idxAlt) =>
     datas?.map((data, idx) =>
-      data?.map((nilai, indexN) =>
-        (nilai / totalPerbandinganAltKriteria[idxAlt][idx]).toFixed(2)
+      data?.map(
+        (nilai, indexN) => nilai / totalPerbandinganAltKriteria[idxAlt][idx]
       )
     )
   );
 
-  const totalNilaiEigen = nilaiEigen.map((subarray) =>
+  const nilaiEigenTransposed = nilaiEigen?.map((data, idx) => {
+    return transposeData(data);
+  });
+
+  const totalNilaiEigen = nilaiEigenTransposed.map((subarray) =>
     subarray.map((innerSubarray) =>
       innerSubarray
         .map((value) => parseFloat(value))
@@ -251,9 +254,10 @@ const AHP = () => {
     dispatch(changeNilaiAkhirAHP(perangkingan));
   }, [perangkingan]);
 
-  console.log({ perangkingan });
-
   // !------------------------------------
+
+  console.log({ nilaiEigenTransposed });
+  console.log({ nilaiEigen });
   return (
     <Grid container columns={12} spacing={2}>
       <Grid item xs={12}>
@@ -525,7 +529,7 @@ const AHP = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {cekMapAlt[idxKode]?.map((data, idx) => (
+                    {newCekMapAlt[idxKode]?.map((data, idx) => (
                       <TableRow>
                         <TableCell>A{idx + 1}</TableCell>
                         {data?.map((nilai, indexN) => (
@@ -561,15 +565,11 @@ const AHP = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {newCekMapAlt[idxKode]?.map((data, idx) => (
+                    {nilaiEigenTransposed[idxKode]?.map((data, idx) => (
                       <TableRow>
                         <TableCell>A{idx + 1}</TableCell>
                         {data?.map((nilai, indexN) => (
-                          <TableCell>
-                            {(
-                              nilai / totalPerbandinganAltKriteria[idxKode][idx]
-                            ).toFixed(2)}
-                          </TableCell>
+                          <TableCell>{nilai.toFixed(2)}</TableCell>
                         ))}
                         <TableCell>
                           {totalNilaiEigen[idxKode][idx].toFixed(2)}

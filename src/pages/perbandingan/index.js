@@ -52,19 +52,41 @@ const Perbandingan = () => {
                 <TableRow key={idx}>
                   <TableCell
                     align="left"
-                    // sx={{
-                    //   fontWeight:
-                    //     Math.max(...nilaiAkhir) === nilaiAkhir[idx] && 600,
-                    //   background:
-                    //     Math.max(...nilaiAkhir) === nilaiAkhir[idx] &&
-                    //     "#E9E9E9",
-                    // }}
+                    sx={{
+                      fontWeight:
+                        Math.max(...nilaiAkhir) === nilaiAkhir[idx] && 600,
+                      background:
+                        Math.max(...nilaiAkhir) === nilaiAkhir[idx] &&
+                        "#E9E9E9",
+                    }}
                   >
                     {item}
                   </TableCell>
-                  <TableCell>{ahp[idx].toFixed(3)}</TableCell>
-                  <TableCell>{saw[idx].toFixed(3)}</TableCell>
-                  <TableCell>{topsis[idx].toFixed(3)}</TableCell>
+                  <TableCell
+                    sx={{
+                      fontWeight: Math.max(...ahp) === ahp[idx] && 600,
+                      background: Math.max(...ahp) === ahp[idx] && "#E9E9E9",
+                    }}
+                  >
+                    {ahp[idx].toFixed(3)}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      fontWeight: Math.max(...saw) === saw[idx] && 600,
+                      background: Math.max(...saw) === saw[idx] && "#E9E9E9",
+                    }}
+                  >
+                    {saw[idx].toFixed(3)}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      fontWeight: Math.max(...topsis) === topsis[idx] && 600,
+                      background:
+                        Math.max(...topsis) === topsis[idx] && "#E9E9E9",
+                    }}
+                  >
+                    {topsis[idx].toFixed(3)}
+                  </TableCell>
                   <TableCell
                     align="left"
                     sx={{
