@@ -22,6 +22,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import MuiDrawer from "@mui/material/Drawer";
 import { NavLink, Outlet } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { CalculateIcon, CompareIcon } from "../assets/icons";
 
 const drawerWidth = 240;
 
@@ -46,31 +47,31 @@ const listMenuItem = [
   {
     pathName: "/dashboard/menu/ahp",
     title: "AHP",
-    icon: <ChecklistIcon />,
+    icon: <CalculateIcon />,
     subMenu: [],
   },
   {
     pathName: "/dashboard/menu/topsis",
     title: "Topsis",
-    icon: <ChecklistIcon />,
+    icon: <CalculateIcon />,
     subMenu: [],
   },
   {
     pathName: "/dashboard/menu/saw",
     title: "SAW",
-    icon: <ChecklistIcon />,
+    icon: <CalculateIcon />,
     subMenu: [],
   },
   {
     pathName: "/dashboard/menu/mopa",
     title: "MOPA",
-    icon: <ChecklistIcon />,
+    icon: <CalculateIcon />,
     subMenu: [],
   },
   {
     pathName: "/dashboard/menu/perbandingan",
     title: "Perbandingan",
-    icon: <ChecklistIcon />,
+    icon: <CompareIcon />,
     subMenu: [],
   },
 ];

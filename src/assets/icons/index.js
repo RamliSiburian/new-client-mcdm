@@ -4,5 +4,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import CalculateIcon from "@mui/icons-material/Calculate";
+import CompareIcon from "@mui/icons-material/Compare";
 
-export { CloseIcon, CheckIcon, DeleteIcon, EditIcon, AddIcon, CalculateIcon };
+export {
+  CloseIcon,
+  CheckIcon,
+  DeleteIcon,
+  EditIcon,
+  AddIcon,
+  CalculateIcon,
+  CompareIcon,
+};
