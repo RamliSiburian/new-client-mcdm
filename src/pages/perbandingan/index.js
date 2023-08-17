@@ -68,7 +68,7 @@ const Perbandingan = () => {
                       background: Math.max(...ahp) === ahp[idx] && "#E9E9E9",
                     }}
                   >
-                    {ahp[idx].toFixed(3)}
+                    {ahp[idx]?.toFixed(3)}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -76,7 +76,7 @@ const Perbandingan = () => {
                       background: Math.max(...saw) === saw[idx] && "#E9E9E9",
                     }}
                   >
-                    {saw[idx].toFixed(3)}
+                    {saw[idx]?.toFixed(3)}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -85,7 +85,7 @@ const Perbandingan = () => {
                         Math.max(...topsis) === topsis[idx] && "#E9E9E9",
                     }}
                   >
-                    {topsis[idx].toFixed(3)}
+                    {topsis[idx]?.toFixed(3)}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -97,7 +97,7 @@ const Perbandingan = () => {
                         "#E9E9E9",
                     }}
                   >
-                    {nilaiAkhir[idx].toFixed(3)}
+                    {nilaiAkhir[idx]?.toFixed(3)}
                   </TableCell>
                 </TableRow>
               ))}

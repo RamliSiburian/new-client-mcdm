@@ -28,7 +28,7 @@ export const {
   loadData,
   changeLoadingDataAlternatif,
   changeNextCodeAlternatif,
-  changeJoinData, 
+  changeJoinData,
 } = dataAlternatifState.actions;
 
 export const getAllDataAlternatifState = (state) => state.dataAlternatif;

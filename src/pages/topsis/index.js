@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  changeJoinData,
   fetchDataAlternatif,
   getAllDataAlternatifState,
 } from "../../store/alternatif/AlternatifData";
@@ -155,11 +156,14 @@ const Topsis = () => {
     arr.reduce((sum, value) => sum + value, 0)
   );
 
-  const finalResult = newDataToShow?.map((item, idx) =>
-    ( Math.sqrt(resultNegatif[idx]) / ( Math.sqrt(resultNegatif[idx]) +  Math.sqrt(resultPositif[idx])))
+  const finalResult = newDataToShow?.map(
+    (item, idx) =>
+      Math.sqrt(resultNegatif[idx]) /
+      (Math.sqrt(resultNegatif[idx]) + Math.sqrt(resultPositif[idx]))
   );
 
   useEffect(() => {
+    dispatch(changeJoinData(newDataToShow));
     dispatch(changeNilaiAkhirTopsis(finalResult));
   }, [finalResult]);
 

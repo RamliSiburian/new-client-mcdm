@@ -16,6 +16,7 @@ import {
 import Reac, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  changeJoinData,
   fetchDataAlternatif,
   getAllDataAlternatifState,
 } from "../../store/alternatif/AlternatifData";
@@ -251,13 +252,12 @@ const AHP = () => {
   );
 
   useEffect(() => {
+    dispatch(changeJoinData(newDataToShow));
     dispatch(changeNilaiAkhirAHP(perangkingan));
   }, [perangkingan]);
 
   // !------------------------------------
 
-  console.log({ nilaiEigenTransposed });
-  console.log({ nilaiEigen });
   return (
     <Grid container columns={12} spacing={2}>
       <Grid item xs={12}>

@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  changeJoinData,
   fetchDataAlternatif,
   getAllDataAlternatifState,
 } from "../../store/alternatif/AlternatifData";
@@ -21,6 +22,7 @@ import {
   getAllDataKriteria,
 } from "../../store/kriteria/KriteriaDatas";
 import { changeNilaiAkhirSaw } from "../../store/saw";
+import Testing from "./test";
 
 const Saw = () => {
   const dispatch = useDispatch();
@@ -118,9 +120,20 @@ const Saw = () => {
     arr.reduce((sum, value) => sum + value)
   );
 
+  const columnSum = normalisasi[0]?.map((col, colIndex) =>
+    normalisasi?.reduce((acc, row) => acc + row[colIndex], 0)
+  );
+  const normalizedAlternatives = normalisasi?.map((row) =>
+    row.map((value, colIndex) => value / columnSum[colIndex])
+  );
+  const weightedScores = normalizedAlternatives.map((row) =>
+    row.reduce((acc, value, colIndex) => acc + value * bobot[colIndex], 0)
+  );
+
   useEffect(() => {
-    dispatch(changeNilaiAkhirSaw(totalPerangkingan));
-  }, [totalPerangkingan]);
+    dispatch(changeJoinData(newDataToShow));
+    dispatch(changeNilaiAkhirSaw(weightedScores));
+  }, [weightedScores]);
 
   return (
     <Grid container columns={12} spacing={3}>
@@ -132,7 +145,6 @@ const Saw = () => {
           <Divider />
         </Box>
       </Grid>
-
       {/* langkah 1 */}
       <Grid item xs={10}>
         <Box>
@@ -176,7 +188,6 @@ const Saw = () => {
           </Table>
         </TableContainer>
       </Grid>
-
       {/* langkah 2 */}
       <Grid item xs={10}>
         <Box>
@@ -216,7 +227,6 @@ const Saw = () => {
           </Table>
         </TableContainer>
       </Grid>
-
       {/* langkah 3 */}
       <Grid item xs={10}>
         <Box>
@@ -253,7 +263,7 @@ const Saw = () => {
                 ))}
                 <TableCell colSpan={2}></TableCell>
               </TableRow>
-              {normalisasi?.map((item, idx) => (
+              {normalizedAlternatives?.map((item, idx) => (
                 <TableRow>
                   <TableCell>A{idx + 1}</TableCell>
                   {item?.map((data, index) => (
@@ -266,7 +276,6 @@ const Saw = () => {
           </Table>
         </TableContainer>
       </Grid>
-
       <Grid item xs={6}>
         <Box>
           <Typography
@@ -291,17 +300,17 @@ const Saw = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {totalPerangkingan?.map((item, idx) => (
+              {weightedScores?.map((item, idx) => (
                 <TableRow key={idx} sx={{}}>
                   <TableCell
                     align="left"
                     sx={{
                       fontWeight:
-                        Math.max(...totalPerangkingan) ===
-                          totalPerangkingan[idx] && 600,
+                        Math.max(...weightedScores) === weightedScores[idx] &&
+                        600,
                       background:
-                        Math.max(...totalPerangkingan) ===
-                          totalPerangkingan[idx] && "#E9E9E9",
+                        Math.max(...weightedScores) === weightedScores[idx] &&
+                        "#E9E9E9",
                     }}
                   >
                     A{idx + 1}
@@ -310,11 +319,11 @@ const Saw = () => {
                     align="left"
                     sx={{
                       fontWeight:
-                        Math.max(...totalPerangkingan) ===
-                          totalPerangkingan[idx] && 600,
+                        Math.max(...weightedScores) === weightedScores[idx] &&
+                        600,
                       background:
-                        Math.max(...totalPerangkingan) ===
-                          totalPerangkingan[idx] && "#E9E9E9",
+                        Math.max(...weightedScores) === weightedScores[idx] &&
+                        "#E9E9E9",
                     }}
                   >
                     {item.toFixed(3)}

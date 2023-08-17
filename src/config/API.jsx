@@ -1,7 +1,8 @@
 import axios from "axios";
 export const API = axios.create({
-    baseURL : process.env.RREACT_APP_BASEURL || 'https://mcdm.up.railway.app/api/v1/'
+    baseURL : process.env.RREACT_APP_BASEURL || 'http://localhost:5000/api/v1'
     //  || 'http://localhost:5000/api/v1'
+    // 'https://mcdm.up.railway.app/api/v1/
 })
 
 export const setAuthToken = (token) => {
