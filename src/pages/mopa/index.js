@@ -23,15 +23,37 @@ import {
   getAllDataAlternatifState,
 } from "../../store/alternatif/AlternatifData";
 import { useState } from "react";
-import { PerbandinganBerpasangan } from "../../components/common/PerbandinganBerpasangan";
+// import { PerbandinganBerpasangan } from "../../components/common/PerbandinganBerpasangan";
 import { changeNilaiAkhirMopa } from "../../store/mopa";
+import { getAllPerbandinganMopa } from "../../store/perbandinganMopa/perbandinganMopa";
 
 const MOPA = () => {
+  const { dataPerbandinganMopa, isLoading } = useSelector(
+    getAllPerbandinganMopa
+  );
   const dispatch = useDispatch();
   const { datas } = useSelector(getAllDataAlternatifState);
   const [kodeKriteria, setKodeKriteria] = useState([]);
   const dataKriteria = useSelector(getAllDataKriteria);
   const [newDataToShow, setNewDataToShow] = useState([]);
+
+  function PerbandinganBerpasangan(item1 = 0, item2 = 0) {
+    let nilaiPerbandingan;
+
+    const bobot = Math.abs(item1 - item2);
+
+    const foundValue = dataPerbandinganMopa.find(
+      (entry) => entry.kode === bobot
+    );
+
+    if (foundValue) {
+      nilaiPerbandingan = foundValue.nilai;
+    } else {
+      nilaiPerbandingan = 1;
+    }
+
+    return nilaiPerbandingan;
+  }
 
   useEffect(() => {
     const kode = dataKriteria.map((kode) => kode?.kode);

@@ -8,6 +8,10 @@ import ahp from "./ahp";
 import mopa from "./mopa";
 import topsis from "./topsis";
 import saw from "./saw";
+import perbandinganAhp from "./perbandinganAhp/perbandinganAhp";
+import updateNilaiPerbandinganAhp from "./perbandinganAhp/updatePerbandinganAhp";
+import perbandinganMopa from "./perbandinganMopa/perbandinganMopa";
+import updateNilaiPerbandinganMopa from "./perbandinganMopa/updatePerbandinganMopa";
 
 export default configureStore({
   reducer: {
@@ -32,6 +36,15 @@ export default configureStore({
 
     // --------------- SAW -----------------
     saw: saw,
+
+    // --------------- Perbandingan AHP -----------------
+
+    perbandinganAhp: perbandinganAhp,
+    updateNilaiPerbandinganAhp: updateNilaiPerbandinganAhp,
+
+    // --------------- Perbandingan AHP -----------------
+    perbandinganMopa: perbandinganMopa,
+    updateNilaiPerbandinganMopa: updateNilaiPerbandinganMopa,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

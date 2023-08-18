@@ -12,6 +12,8 @@ import Topsis from "./pages/topsis";
 import MOPA from "./pages/mopa";
 import Perbandingan from "./pages/perbandingan";
 import Saw from "./pages/saw";
+import NilaiPerbandingan from "./pages/ahp/nilaiPerbandingan/nilaiPerbandingan";
+import NilaiPerbandinganMopa from "./pages/mopa/nilaiPerbandingan/nilaiPerbandingan";
 
 function App() {
   const navigate = useNavigate();
@@ -43,8 +45,18 @@ function App() {
         <Route exact path=":data-master/alternatif" element={<Alternatif />} />
         <Route exact path=":data-master/kriteria" element={<Kriteria />} />
         <Route exact path=":menu/topsis" element={<Topsis />} />
-        <Route exact path=":menu/ahp" element={<AHP />} />
-        <Route exact path=":menu/mopa" element={<MOPA />} />
+        <Route
+          exact
+          path=":menu/ahp/nilaiahp"
+          element={<NilaiPerbandingan />}
+        />
+        <Route exact path=":menu/ahp/hitung" element={<AHP />} />
+        <Route
+          exact
+          path=":menu/mopa/nilaimopa"
+          element={<NilaiPerbandinganMopa />}
+        />
+        <Route exact path=":menu/mopa/hitung" element={<MOPA />} />
         <Route exact path=":menu/saw" element={<Saw />} />
         <Route exact path=":menu/perbandingan" element={<Perbandingan />} />
         <Route

@@ -25,11 +25,13 @@ import {
   getAllDataKriteria,
 } from "../../store/kriteria/KriteriaDatas";
 import PerbandinganBerpasangan from "../../components/common/PerbandinganBerpasangan";
-import PerbandinganAHP from "../../components/common/PerbandinganAHP";
+// import PerbandinganAHP from "../../components/common/PerbandinganAHP";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { changeNilaiAkhirAHP } from "../../store/ahp";
+import { getAllPerbandinganAhp } from "../../store/perbandinganAhp/perbandinganAhp";
 
 const AHP = () => {
+  const { dataPerbandingan, isLoading } = useSelector(getAllPerbandinganAhp);
   const dispatch = useDispatch();
   const { datas } = useSelector(getAllDataAlternatifState);
   const [kodeKriteria, setKodeKriteria] = useState([]);
@@ -41,6 +43,22 @@ const AHP = () => {
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
+
+  function PerbandinganAHP(item1 = 0, item2 = 0) {
+    let nilaiPerbandingan;
+
+    const bobot = Math.abs(item1 - item2);
+
+    const foundValue = dataPerbandingan.find((entry) => entry.kode === bobot);
+
+    if (foundValue) {
+      nilaiPerbandingan = foundValue.nilai;
+    } else {
+      nilaiPerbandingan = 1;
+    }
+
+    return nilaiPerbandingan;
+  }
 
   useEffect(() => {
     const kode = dataKriteria.map((kode) => kode?.kode);

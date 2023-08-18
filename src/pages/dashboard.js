@@ -47,8 +47,19 @@ const listMenuItem = [
   {
     pathName: "/dashboard/menu/ahp",
     title: "AHP",
-    icon: <CalculateIcon />,
-    subMenu: [],
+    icon: <ArticleIcon />,
+    subMenu: [
+      {
+        pathName: "/dashboard/menu/ahp/nilaiahp",
+        title: "Nilai Perbandingan",
+        icon: <ChecklistIcon />,
+      },
+      {
+        pathName: "/dashboard/menu/ahp/hitung",
+        title: "Perhitungan AHP",
+        icon: <CalculateIcon />,
+      },
+    ],
   },
   {
     pathName: "/dashboard/menu/topsis",
@@ -65,8 +76,19 @@ const listMenuItem = [
   {
     pathName: "/dashboard/menu/mopa",
     title: "MOPA",
-    icon: <CalculateIcon />,
-    subMenu: [],
+    icon: <ArticleIcon />,
+    subMenu: [
+      {
+        pathName: "/dashboard/menu/mopa/nilaimopa",
+        title: "Nilai Perbandingan",
+        icon: <ChecklistIcon />,
+      },
+      {
+        pathName: "/dashboard/menu/mopa/hitung",
+        title: "Perhitungan Mopa",
+        icon: <CalculateIcon />,
+      },
+    ],
   },
   {
     pathName: "/dashboard/menu/perbandingan",
@@ -76,7 +98,8 @@ const listMenuItem = [
   },
 ];
 
-const MenuItem = ({
+const 
+MenuItem = ({
   pathName,
   title,
   icon,

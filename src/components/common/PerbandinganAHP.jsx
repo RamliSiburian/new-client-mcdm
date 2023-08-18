@@ -1,49 +1,33 @@
- export function PerbandinganAHP ( item1 = 0 , item2 = 0) {
+
+
+
+
+const nilai = [
+  { case: 0, nilai: 1 },
+  { case: 1, nilai: 3 },
+  { case: 2, nilai: 5 },
+  { case: 3, nilai: 7 },
+  { case: 4, nilai: 9 }
+];
+
+
+
+export function PerbandinganAHP(item1 = 0, item2 = 0) {
+
+
   let nilaiPerbandingan;
 
-  const bobot = item1 - item2
+  const bobot = Math.abs(item1 - item2); 
 
+  const foundValue = nilai.find(entry => entry.case === bobot);
 
-
-  switch (bobot) {
-    case 0:
-      nilaiPerbandingan = 1;
-      break;
-    case 1:
-      nilaiPerbandingan = 3;
-      break;
-    case 2:
-      nilaiPerbandingan = 5;
-      break;
-    case 3:
-      nilaiPerbandingan = 7;
-      break;
-    case 4:
-      nilaiPerbandingan = 11;
-      break;
-    case 5:
-      nilaiPerbandingan = 13;
-      break;
-    case 6:
-      nilaiPerbandingan = 15;
-      break;
-    case 7:
-      nilaiPerbandingan = 17;
-      break;
-    case 8:
-      nilaiPerbandingan = 19;
-      break;
-    case 9:
-      nilaiPerbandingan = 21;
-      break;
-    default:
-      nilaiPerbandingan = 0;
+  if (foundValue) {
+    nilaiPerbandingan = foundValue.nilai;
+  } else {
+    nilaiPerbandingan = 0; 
   }
 
   return nilaiPerbandingan;
-};
+}
 
-
-
-
-export default PerbandinganAHP
+export default PerbandinganAHP;
