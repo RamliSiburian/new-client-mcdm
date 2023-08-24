@@ -20,10 +20,14 @@ import { CloseIcon } from "../../../assets/icons";
 import CustomButton from "../../../components/common/atoms/CustomButton";
 import { createPerbandinganAhp } from "../../../config/perbandinganAhp";
 import { dataPerbandingan } from "../../../components/common/dataPerbandingan";
+import { createPerbandinganCriteriaAhp } from "../../../config/perbandinganKkriteriaAhp";
 
 const data = dataPerbandingan;
 
-const AddNilaiPerbandingan = ({ openAddNilaiAhp, setOpenAddNilaiAhp }) => {
+const AddNilaiPerbandinganKriteria = ({
+  openAddNilaiKriteriaAhp,
+  setOpenAddNilaiKriteriaAhp,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -37,7 +41,7 @@ const AddNilaiPerbandingan = ({ openAddNilaiAhp, setOpenAddNilaiAhp }) => {
 
   // ! handler
   const handleClose = () => {
-    setOpenAddNilaiAhp(false);
+    setOpenAddNilaiKriteriaAhp(false);
   };
 
   const handleChange = (event) => {
@@ -55,9 +59,9 @@ const AddNilaiPerbandingan = ({ openAddNilaiAhp, setOpenAddNilaiAhp }) => {
     const saveData = async () => {
       setIsLoading(true);
       try {
-        const data = await createPerbandinganAhp(params);
+        const data = await createPerbandinganCriteriaAhp(params);
         //   navigate("dashboard/data-master/kriteria", { replace: true });
-        setOpenAddNilaiAhp(false);
+        setOpenAddNilaiKriteriaAhp(false);
         setIsLoading(false);
         setPerbandingan(null);
         setNilai("");
@@ -69,7 +73,7 @@ const AddNilaiPerbandingan = ({ openAddNilaiAhp, setOpenAddNilaiAhp }) => {
     perbandingan !== null && nilai !== "" && saveData();
   };
   return (
-    <Dialog open={openAddNilaiAhp} fullWidth>
+    <Dialog open={openAddNilaiKriteriaAhp} fullWidth>
       <DialogTitle>
         <Box
           sx={{
@@ -134,4 +138,4 @@ const AddNilaiPerbandingan = ({ openAddNilaiAhp, setOpenAddNilaiAhp }) => {
   );
 };
 
-export default AddNilaiPerbandingan;
+export default AddNilaiPerbandinganKriteria;

@@ -41,9 +41,9 @@ const Alternatif = () => {
   const [openUpdateAlternatif, setOpenUpdateAlternatif] = useState(false);
   const dispatch = useDispatch();
   const [codeToDelete, setCodeToDelete] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const { datas, loading } = useSelector(getAllDataAlternatifState);
   const dataKriteria = useSelector(getAllDataKriteria);
   const [kodeKriteria, setKodeKriteria] = useState([]);

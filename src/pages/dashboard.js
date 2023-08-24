@@ -22,9 +22,9 @@ import ArticleIcon from "@mui/icons-material/Article";
 import MuiDrawer from "@mui/material/Drawer";
 import { NavLink, Outlet } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { CalculateIcon, CompareIcon } from "../assets/icons";
+import { CalculateIcon, CompareIcon, ScienceIcon } from "../assets/icons";
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const listMenuItem = [
   {
@@ -50,8 +50,13 @@ const listMenuItem = [
     icon: <ArticleIcon />,
     subMenu: [
       {
+        pathName: "/dashboard/menu/ahp/nilaikriteriaahp",
+        title: "Perbandingan Kriteria",
+        icon: <ChecklistIcon />,
+      },
+      {
         pathName: "/dashboard/menu/ahp/nilaiahp",
-        title: "Nilai Perbandingan",
+        title: "Perbandingan Alt",
         icon: <ChecklistIcon />,
       },
       {
@@ -96,10 +101,15 @@ const listMenuItem = [
     icon: <CompareIcon />,
     subMenu: [],
   },
+  {
+    pathName: "/dashboard/menu/anova",
+    title: "Uji Anova",
+    icon: <ScienceIcon />,
+    subMenu: [],
+  },
 ];
 
-const 
-MenuItem = ({
+const MenuItem = ({
   pathName,
   title,
   icon,
@@ -172,7 +182,7 @@ MenuItem = ({
 );
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState("");
 
   const handleDrawerOpen = () => {

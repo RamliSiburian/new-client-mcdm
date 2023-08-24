@@ -14,6 +14,8 @@ import Perbandingan from "./pages/perbandingan";
 import Saw from "./pages/saw";
 import NilaiPerbandingan from "./pages/ahp/nilaiPerbandingan/nilaiPerbandingan";
 import NilaiPerbandinganMopa from "./pages/mopa/nilaiPerbandingan/nilaiPerbandingan";
+import UjiAnova from "./pages/ujiAnova";
+import NilaiPerbandinganKriteria from "./pages/ahp/nilaiPerbandinganKriteria/nilaiPerbandingan";
 
 function App() {
   const navigate = useNavigate();
@@ -50,6 +52,11 @@ function App() {
           path=":menu/ahp/nilaiahp"
           element={<NilaiPerbandingan />}
         />
+        <Route
+          exact
+          path=":menu/ahp/nilaikriteriaahp"
+          element={<NilaiPerbandinganKriteria />}
+        />
         <Route exact path=":menu/ahp/hitung" element={<AHP />} />
         <Route
           exact
@@ -59,6 +66,7 @@ function App() {
         <Route exact path=":menu/mopa/hitung" element={<MOPA />} />
         <Route exact path=":menu/saw" element={<Saw />} />
         <Route exact path=":menu/perbandingan" element={<Perbandingan />} />
+        <Route exact path=":menu/anova" element={<UjiAnova />} />
         <Route
           exact
           path="dashboard/*"

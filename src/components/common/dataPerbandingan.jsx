@@ -1,4 +1,6 @@
-export const dataPerbandingan = [
+export const 
+
+dataPerbandingan = [
     { kode: 1, deskripsi: "Sama penting dengan" },
     { kode: 2, deskripsi: "Mendekati sedikit lebih penting dari" },
     { kode: 3, deskripsi: "Sedikit lebih penting dari" },

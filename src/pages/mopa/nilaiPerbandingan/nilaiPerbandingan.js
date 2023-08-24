@@ -20,6 +20,8 @@ import {
   getAllPerbandinganMopa,
 } from "../../../store/perbandinganMopa/perbandinganMopa";
 import { loadDataPerbandinganMopa } from "../../../store/perbandinganMopa/updatePerbandinganMopa";
+import CustomDialogDelete from "../../../components/common/CustomDialogDelete";
+import { deleteDataPerbandinganMopa } from "../../../config/perbandinganMopa";
 
 const NilaiPerbandinganMopa = () => {
   const dispatch = useDispatch();
@@ -29,10 +31,12 @@ const NilaiPerbandinganMopa = () => {
   const { dataPerbandinganMopa, isLoading } = useSelector(
     getAllPerbandinganMopa
   );
+  const [codeToDelete, setCodeToDelete] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     dispatch(fetchPerbandinganMopa());
-  }, [openAddNilaiMopa, openUpdatePerbandinganMopa]);
+  }, [openAddNilaiMopa, openUpdatePerbandinganMopa, confirmDelete]);
 
   const handleUpdate = (item) => {
     dispatch(
@@ -43,6 +47,14 @@ const NilaiPerbandinganMopa = () => {
       })
     );
     setOpenUpdatePerbandinganMopa(true);
+  };
+  const handleDelete = async () => {
+    try {
+      await deleteDataPerbandinganMopa(codeToDelete);
+      setConfirmDelete(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -83,7 +95,6 @@ const NilaiPerbandinganMopa = () => {
           <Typography sx={{ color: "#FFF" }}>Add</Typography>
         </Box>
       </Box>
-
       <TableContainer sx={{ mt: 3 }}>
         <Table size="small" aria-label="simple table">
           <TableHead>
@@ -109,8 +120,8 @@ const NilaiPerbandinganMopa = () => {
                   <DeleteIcon
                     sx={{ color: "#B31312", cursor: "pointer" }}
                     onClick={() => {
-                      // setCodeToDelete(item?.kode);
-                      // setConfirmDelete(true);
+                      setCodeToDelete(item?.kode);
+                      setConfirmDelete(true);
                     }}
                   />
                 </TableCell>
@@ -119,7 +130,6 @@ const NilaiPerbandinganMopa = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
       {isLoading ? (
         <Box
           sx={{
@@ -145,16 +155,13 @@ const NilaiPerbandinganMopa = () => {
           </Box>
         )
       )}
-
       {/* dialog delete */}
-
-      {/* <CustomDialogDelete
+      <CustomDialogDelete
         open={confirmDelete}
         setOpen={setConfirmDelete}
         handleDelete={handleDelete}
-        errorMessage={errorMessageDelete}
-      /> */}
-
+        dataToDelete={codeToDelete}
+      />
       <AddNilaiPerbandinganMopa
         {...{ openAddNilaiMopa, setOpenAddNilaiMopa }}
       />

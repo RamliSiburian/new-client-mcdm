@@ -10,49 +10,53 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import AddNilaiPerbandingan from "./add";
 import { AddIcon, DeleteIcon, EditIcon } from "../../../assets/icons";
-import {
-  deleteDataPerbandinganAhp,
-  getDataPerbandinganAhp,
-} from "../../../config/perbandinganAhp";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchPerbandinganAhp,
-  getAllPerbandinganAhp,
-} from "../../../store/perbandinganAhp/perbandinganAhp";
-import UpdatePerbandinganAhp from "./Update";
-import { loadDataPerbandinganAhp } from "../../../store/perbandinganAhp/updatePerbandinganAhp";
+  fetchPerbandinganKriteriaAhp,
+  getAllPerbandinganKriteriaAhp,
+} from "../../../store/perbandinganKriteriaAhp/perbandinganKriteriaAhp";
+import { loadDataPerbandinganKriteriaAhp } from "../../../store/perbandinganKriteriaAhp/updatePerbandinganKriteriaAhp";
+import AddNilaiPerbandinganKriteria from "./add";
+import UpdatePerbandinganKriteriaAhp from "./Update";
+import { deleteDataPerbandinganCriteriaAhp } from "../../../config/perbandinganKkriteriaAhp";
 import CustomDialogDelete from "../../../components/common/CustomDialogDelete";
 
-const NilaiPerbandingan = () => {
+const NilaiPerbandinganKriteria = () => {
   const dispatch = useDispatch();
-  const [openAddNilaiAhp, setOpenAddNilaiAhp] = useState(false);
-  const [openUpdatePerbandinganAhp, setOpenUpdatePerbandinganAhp] =
-    useState(false);
-  const { dataPerbandingan, isLoading } = useSelector(getAllPerbandinganAhp);
+  const [openAddNilaiKriteriaAhp, setOpenAddNilaiKriteriaAhp] = useState(false);
+  const [
+    openUpdatePerbandinganKriteriaAhp,
+    setOpenUpdatePerbandinganKriteriaAhp,
+  ] = useState(false);
+  const { dataPerbandinganKriteria, isLoading } = useSelector(
+    getAllPerbandinganKriteriaAhp
+  );
   const [codeToDelete, setCodeToDelete] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
-  
 
   useEffect(() => {
-    dispatch(fetchPerbandinganAhp());
-  }, [openAddNilaiAhp, openUpdatePerbandinganAhp, confirmDelete]);
+    dispatch(fetchPerbandinganKriteriaAhp());
+  }, [
+    openAddNilaiKriteriaAhp,
+    openUpdatePerbandinganKriteriaAhp,
+    confirmDelete,
+  ]);
 
   const handleUpdate = (item) => {
     dispatch(
-      loadDataPerbandinganAhp({
+      loadDataPerbandinganKriteriaAhp({
         deskripsi: item.deskripsi,
         nilai: item.nilai,
         kode: item.kode,
       })
     );
-    setOpenUpdatePerbandinganAhp(true);
+    setOpenUpdatePerbandinganKriteriaAhp(true);
   };
 
-  const deleteData = async () => {
+  const handleDelete = async () => {
     try {
-      await deleteDataPerbandinganAhp(codeToDelete);
+      await deleteDataPerbandinganCriteriaAhp(codeToDelete);
       setConfirmDelete(false);
     } catch (err) {
       console.error(err);
@@ -90,7 +94,7 @@ const NilaiPerbandingan = () => {
             cursor: "pointer",
           }}
           onClick={() => {
-            setOpenAddNilaiAhp(!openAddNilaiAhp);
+            setOpenAddNilaiKriteriaAhp(!openAddNilaiKriteriaAhp);
           }}
         >
           <AddIcon sx={{ color: "#FFF" }} />
@@ -109,7 +113,7 @@ const NilaiPerbandingan = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataPerbandingan?.map((item, idx) => (
+            {dataPerbandinganKriteria?.map((item, idx) => (
               <TableRow key={item?.kode} sx={{}}>
                 <TableCell align="left">{idx + 1}</TableCell>
                 <TableCell align="left">{item.deskripsi}</TableCell>
@@ -145,7 +149,7 @@ const NilaiPerbandingan = () => {
           <CircularProgress sx={{ color: "#51B15C" }} size={24} />
         </Box>
       ) : (
-        dataPerbandingan.length === 0 && (
+        dataPerbandinganKriteria?.length === 0 && (
           <Box
             sx={{
               padding: "32px 0px",
@@ -159,30 +163,25 @@ const NilaiPerbandingan = () => {
           </Box>
         )
       )}
-
-      {/* dialog delete */}
-
-      {/* <CustomDialogDelete
-        open={confirmDelete}
-        setOpen={setConfirmDelete}
-        handleDelete={handleDelete}
-        errorMessage={errorMessageDelete}
-      /> */}
-
-      <AddNilaiPerbandingan {...{ openAddNilaiAhp, setOpenAddNilaiAhp }} />
-      <UpdatePerbandinganAhp
-        {...{ openUpdatePerbandinganAhp, setOpenUpdatePerbandinganAhp }}
-      />
-
       {/* dialog delete */}
       <CustomDialogDelete
         open={confirmDelete}
         setOpen={setConfirmDelete}
-        handleDelete={deleteData}
+        handleDelete={handleDelete}
         dataToDelete={codeToDelete}
+      />
+
+      <AddNilaiPerbandinganKriteria
+        {...{ openAddNilaiKriteriaAhp, setOpenAddNilaiKriteriaAhp }}
+      />
+      <UpdatePerbandinganKriteriaAhp
+        {...{
+          openUpdatePerbandinganKriteriaAhp,
+          setOpenUpdatePerbandinganKriteriaAhp,
+        }}
       />
     </Box>
   );
 };
 
-export default NilaiPerbandingan;
+export default NilaiPerbandinganKriteria;

@@ -12,6 +12,8 @@ import perbandinganAhp from "./perbandinganAhp/perbandinganAhp";
 import updateNilaiPerbandinganAhp from "./perbandinganAhp/updatePerbandinganAhp";
 import perbandinganMopa from "./perbandinganMopa/perbandinganMopa";
 import updateNilaiPerbandinganMopa from "./perbandinganMopa/updatePerbandinganMopa";
+import perbandinganKriteriaAhp from "./perbandinganKriteriaAhp/perbandinganKriteriaAhp";
+import updateNilaiPerbandinganKriteriaAhp from "./perbandinganKriteriaAhp/updatePerbandinganKriteriaAhp";
 
 export default configureStore({
   reducer: {
@@ -42,9 +44,13 @@ export default configureStore({
     perbandinganAhp: perbandinganAhp,
     updateNilaiPerbandinganAhp: updateNilaiPerbandinganAhp,
 
-    // --------------- Perbandingan AHP -----------------
+    // --------------- Perbandingan Mopa -----------------
     perbandinganMopa: perbandinganMopa,
     updateNilaiPerbandinganMopa: updateNilaiPerbandinganMopa,
+
+    // --------------- Perbandingan Kriteria AHP -----------------
+    perbandinganKriteriaAhp: perbandinganKriteriaAhp,
+    updateNilaiPerbandinganKriteriaAhp: updateNilaiPerbandinganKriteriaAhp,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

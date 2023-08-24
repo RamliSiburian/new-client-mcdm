@@ -15,5 +15,6 @@ export const mopaState = createSlice({
 export const { changeNilaiAkhirMopa } = mopaState.actions;
 
 export const getAllDataMopa = (state) => state.mopa;
+export const getDataMopa = (state) => state.mopa.nilaiAkhir;
 
 export default mopaState.reducer;

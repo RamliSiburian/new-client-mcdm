@@ -24,14 +24,16 @@ import {
   fetchDataKriteria,
   getAllDataKriteria,
 } from "../../store/kriteria/KriteriaDatas";
-import PerbandinganBerpasangan from "../../components/common/PerbandinganBerpasangan";
-// import PerbandinganAHP from "../../components/common/PerbandinganAHP";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { changeNilaiAkhirAHP } from "../../store/ahp";
 import { getAllPerbandinganAhp } from "../../store/perbandinganAhp/perbandinganAhp";
+import { getAllPerbandinganKriteriaAhp } from "../../store/perbandinganKriteriaAhp/perbandinganKriteriaAhp";
 
 const AHP = () => {
   const { dataPerbandingan, isLoading } = useSelector(getAllPerbandinganAhp);
+  const { dataPerbandinganKriteria } = useSelector(
+    getAllPerbandinganKriteriaAhp
+  );
   const dispatch = useDispatch();
   const { datas } = useSelector(getAllDataAlternatifState);
   const [kodeKriteria, setKodeKriteria] = useState([]);
@@ -44,15 +46,33 @@ const AHP = () => {
     setExpanded(newExpanded ? panel : false);
   };
 
+  function PerbandinganKriteriaAHP(item1 = 0, item2 = 0) {
+    let nilaiPerbandingan;
+
+    const bobot = Math.abs(item1 - item2);
+
+    const foundValue = dataPerbandingan.find((entry) => entry.nilai === bobot);
+
+    if (foundValue) {
+      nilaiPerbandingan = foundValue.kode;
+    } else {
+      nilaiPerbandingan = 1;
+    }
+
+    return nilaiPerbandingan;
+  }
+
   function PerbandinganAHP(item1 = 0, item2 = 0) {
     let nilaiPerbandingan;
 
     const bobot = Math.abs(item1 - item2);
 
-    const foundValue = dataPerbandingan.find((entry) => entry.kode === bobot);
+    const foundValue = dataPerbandinganKriteria.find(
+      (entry) => entry.nilai === bobot
+    );
 
     if (foundValue) {
-      nilaiPerbandingan = foundValue.nilai;
+      nilaiPerbandingan = foundValue.kode;
     } else {
       nilaiPerbandingan = 1;
     }
@@ -112,15 +132,15 @@ const AHP = () => {
       return (
         total[index] +
         (item.bobot > item2.bobot
-          ? PerbandinganBerpasangan(
+          ? PerbandinganKriteriaAHP(
               (item.bobot + 0.05 - item2.bobot).toFixed(2)
             )
-          : PerbandinganBerpasangan(0.05)) /
+          : PerbandinganKriteriaAHP(0.05)) /
           (item2.bobot > item.bobot
-            ? PerbandinganBerpasangan(
+            ? PerbandinganKriteriaAHP(
                 (item2.bobot + 0.05 - item.bobot).toFixed(2)
               )
-            : PerbandinganBerpasangan(0.05))
+            : PerbandinganKriteriaAHP(0.05))
       );
     });
   }, new Array(dataKriteria.length).fill(0));
@@ -129,37 +149,37 @@ const AHP = () => {
     return dataKriteria.map((item2, index) => {
       return Number.isInteger(
         (total.bobot > item2.bobot
-          ? PerbandinganBerpasangan(
+          ? PerbandinganKriteriaAHP(
               (total.bobot + 0.05 - item2.bobot).toFixed(2)
             )
-          : PerbandinganBerpasangan(0.05)) /
+          : PerbandinganKriteriaAHP(0.05)) /
           (item2.bobot > total.bobot
-            ? PerbandinganBerpasangan(
+            ? PerbandinganKriteriaAHP(
                 (item2.bobot + 0.05 - total.bobot).toFixed(2)
               )
-            : PerbandinganBerpasangan(0.05))
+            : PerbandinganKriteriaAHP(0.05))
       )
         ? (total.bobot > item2.bobot
-            ? PerbandinganBerpasangan(
+            ? PerbandinganKriteriaAHP(
                 (total.bobot + 0.05 - item2.bobot).toFixed(2)
               )
-            : PerbandinganBerpasangan(0.05)) /
+            : PerbandinganKriteriaAHP(0.05)) /
             (item2.bobot > total.bobot
-              ? PerbandinganBerpasangan(
+              ? PerbandinganKriteriaAHP(
                   (item2.bobot + 0.05 - total.bobot).toFixed(2)
                 )
-              : PerbandinganBerpasangan(0.05))
+              : PerbandinganKriteriaAHP(0.05))
         : (
             (total.bobot > item2.bobot
-              ? PerbandinganBerpasangan(
+              ? PerbandinganKriteriaAHP(
                   (total.bobot + 0.05 - item2.bobot).toFixed(2)
                 )
-              : PerbandinganBerpasangan(0.05)) /
+              : PerbandinganKriteriaAHP(0.05)) /
             (item2.bobot > total.bobot
-              ? PerbandinganBerpasangan(
+              ? PerbandinganKriteriaAHP(
                   (item2.bobot + 0.05 - total.bobot).toFixed(2)
                 )
-              : PerbandinganBerpasangan(0.05))
+              : PerbandinganKriteriaAHP(0.05))
           ).toFixed(2);
     });
   });
@@ -269,9 +289,22 @@ const AHP = () => {
       .reduce((acc, curr) => acc + curr, 0)
   );
 
+  const saveFinalResult = async () => {
+    const metode = "ahp";
+    const result = perangkingan;
+
+    try {
+      // console.log({ result });
+      //TODO : lanjut api
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     dispatch(changeJoinData(newDataToShow));
     dispatch(changeNilaiAkhirAHP(perangkingan));
+    saveFinalResult();
   }, [perangkingan]);
 
   // !------------------------------------
@@ -384,51 +417,51 @@ const AHP = () => {
                         <TableCell key={item2.kode}>
                           {Number.isInteger(
                             (item1.bobot > item2.bobot
-                              ? PerbandinganBerpasangan(
+                              ? PerbandinganKriteriaAHP(
                                   (item1.bobot + 0.05 - item2.bobot).toFixed(2)
                                 )
-                              : PerbandinganBerpasangan(0.05)) /
+                              : PerbandinganKriteriaAHP(0.05)) /
                               (item2.bobot > item1.bobot
-                                ? PerbandinganBerpasangan(
+                                ? PerbandinganKriteriaAHP(
                                     (item2.bobot + 0.05 - item1.bobot).toFixed(
                                       2
                                     )
                                   )
-                                : PerbandinganBerpasangan(0.05))
+                                : PerbandinganKriteriaAHP(0.05))
                           )
                             ? (item1.bobot > item2.bobot
-                                ? PerbandinganBerpasangan(
+                                ? PerbandinganKriteriaAHP(
                                     (item1.bobot + 0.05 - item2.bobot).toFixed(
                                       2
                                     )
                                   )
-                                : PerbandinganBerpasangan(0.05)) /
+                                : PerbandinganKriteriaAHP(0.05)) /
                               (item2.bobot > item1.bobot
-                                ? PerbandinganBerpasangan(
+                                ? PerbandinganKriteriaAHP(
                                     (item2.bobot + 0.05 - item1.bobot).toFixed(
                                       2
                                     )
                                   )
-                                : PerbandinganBerpasangan(0.05))
+                                : PerbandinganKriteriaAHP(0.05))
                             : (
                                 (item1.bobot > item2.bobot
-                                  ? PerbandinganBerpasangan(
+                                  ? PerbandinganKriteriaAHP(
                                       (
                                         item1.bobot +
                                         0.05 -
                                         item2.bobot
                                       ).toFixed(2)
                                     )
-                                  : PerbandinganBerpasangan(0.05)) /
+                                  : PerbandinganKriteriaAHP(0.05)) /
                                 (item2.bobot > item1.bobot
-                                  ? PerbandinganBerpasangan(
+                                  ? PerbandinganKriteriaAHP(
                                       (
                                         item2.bobot +
                                         0.05 -
                                         item1.bobot
                                       ).toFixed(2)
                                     )
-                                  : PerbandinganBerpasangan(0.05))
+                                  : PerbandinganKriteriaAHP(0.05))
                               ).toFixed(2)}
                         </TableCell>
                       ))}

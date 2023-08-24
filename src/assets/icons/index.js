@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import CompareIcon from "@mui/icons-material/Compare";
+import ScienceIcon from "@mui/icons-material/Science";
 
 export {
   CloseIcon,
@@ -14,4 +15,5 @@ export {
   AddIcon,
   CalculateIcon,
   CompareIcon,
+  ScienceIcon,
 };
