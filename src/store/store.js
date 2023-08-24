@@ -14,6 +14,7 @@ import perbandinganMopa from "./perbandinganMopa/perbandinganMopa";
 import updateNilaiPerbandinganMopa from "./perbandinganMopa/updatePerbandinganMopa";
 import perbandinganKriteriaAhp from "./perbandinganKriteriaAhp/perbandinganKriteriaAhp";
 import updateNilaiPerbandinganKriteriaAhp from "./perbandinganKriteriaAhp/updatePerbandinganKriteriaAhp";
+import ujiAnova from "./anova";
 
 export default configureStore({
   reducer: {
@@ -51,6 +52,9 @@ export default configureStore({
     // --------------- Perbandingan Kriteria AHP -----------------
     perbandinganKriteriaAhp: perbandinganKriteriaAhp,
     updateNilaiPerbandinganKriteriaAhp: updateNilaiPerbandinganKriteriaAhp,
+
+    // --------------- Uji Anova ---------------------------------
+    ujiAnova: ujiAnova,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
