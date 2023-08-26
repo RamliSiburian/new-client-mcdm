@@ -43,7 +43,7 @@ const MOPA = () => {
     const bobot = Math.abs(item1 - item2);
 
     const foundValue = dataPerbandinganMopa.find(
-      (entry) => entry.nilai === bobot
+      (entry) => entry.nilai === parseFloat(bobot.toFixed(2))
     );
 
     if (foundValue) {
