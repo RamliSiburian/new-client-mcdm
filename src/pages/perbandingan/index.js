@@ -17,6 +17,7 @@ import { getAllDataAlternatifState } from "../../store/alternatif/AlternatifData
 import { getDataTopsis } from "../../store/topsis";
 import { getDataSaw } from "../../store/saw";
 import { getAllDataAHP } from "../../store/ahp";
+import { getResultDataUji } from "../../store/anova";
 
 const Perbandingan = () => {
   const { nilaiAkhir } = useSelector(getAllDataMopa);
@@ -25,6 +26,8 @@ const Perbandingan = () => {
   const ahp = useSelector(getAllDataAHP);
   const { joinData } = useSelector(getAllDataAlternatifState);
   const kodeAlt = joinData?.map((data) => data.kode);
+  const anova = useSelector(getResultDataUji);
+  console.log({ anova });
 
   return (
     <Grid container columns={12} spacing={3}>
@@ -98,6 +101,38 @@ const Perbandingan = () => {
                     }}
                   >
                     {nilaiAkhir[idx]?.toFixed(3)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Box>
+          <Typography sx={{ fontWeight: 600, fontSize: "20px", mt: 3 }}>
+            Hasil Uji Anova
+          </Typography>
+          <Divider />
+        </Box>
+
+        <TableContainer sx={{ mt: 2, mb: 5 }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Metode</TableCell>
+                <TableCell align="left">Hasil</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {anova?.map((item, idx) => (
+                <TableRow key={idx}>
+                  <TableCell align="left" sx={{}}>
+                    {item?.name}
+                  </TableCell>
+                  <TableCell align="left" sx={{}}>
+                    {item?.data}
                   </TableCell>
                 </TableRow>
               ))}

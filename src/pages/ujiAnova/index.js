@@ -1,4 +1,14 @@
-import { Box, Divider, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomInput from "../../components/common/atoms/CustomInput";
 import CustomButton from "../../components/common/atoms/CustomButton";
@@ -7,13 +17,14 @@ import { getAllDataAHP } from "../../store/ahp";
 import { getAllDataMopa, getDataMopa } from "../../store/mopa";
 import { getDataTopsis } from "../../store/topsis";
 import { getDataSaw } from "../../store/saw";
+import { changeDataAnova } from "../../store/anova";
 
-const dataUji = [
-  0.843267898, 0.8197365750000001, 0.608251303, 0.8207482024999999,
-  0.7758069300000001, 0.8821112425, 0.6178887875000001, 0.917665698, 0.63557285,
-  0.574572203, 0.60265471, 0.576847795, 0.8455434900000001, 0.748485383,
-  0.8255838355, 0.847929138, 0.8422562705000001, 0.866877165,
-];
+// const dataUji = [
+//   0.843267898, 0.8197365750000001, 0.608251303, 0.8207482024999999,
+//   0.7758069300000001, 0.8821112425, 0.6178887875000001, 0.917665698, 0.63557285,
+//   0.574572203, 0.60265471, 0.576847795, 0.8455434900000001, 0.748485383,
+//   0.8255838355, 0.847929138, 0.8422562705000001, 0.866877165,
+// ];
 
 const UjiAnova = () => {
   const dispatch = useDispatch();
@@ -24,14 +35,22 @@ const UjiAnova = () => {
 
   const [anova, setAnova] = useState("");
   const ahp = useSelector(getAllDataAHP);
-  const mopa = useSelector(getDataMopa  );
+  const mopa = useSelector(getDataMopa);
   const topsis = useSelector(getDataTopsis);
   const saw = useSelector(getDataSaw);
+  const [datas, setDatas] = useState([]);
+  const [dataFix, setDataFix] = useState(null);
 
-  console.log({ ahp });
-  console.log({ mopa });
-  console.log({ topsis });
-  console.log({ saw });
+  useEffect(() => {
+    const tempData = [
+      { name: "ahp", data: ahp },
+      { name: "mopa", data: mopa },
+      { name: "topsis", data: topsis },
+      { name: "saw", data: saw },
+    ];
+
+    setDatas(tempData);
+  }, [ahp, mopa, topsis, saw]);
 
   useEffect(() => {
     const dividedData = Array.from({ length: devider }, (_, index) => ({
@@ -59,7 +78,10 @@ const UjiAnova = () => {
     let startIndex = 0;
     const datas = dataDevided.map((item) => {
       const sliceEnd = Object.values(item)[0];
-      const slicedData = dataUji.slice(startIndex, startIndex + sliceEnd);
+      const slicedData = dataFix?.data?.slice(
+        startIndex,
+        startIndex + sliceEnd
+      );
       startIndex += sliceEnd;
       return slicedData;
     });
@@ -90,6 +112,7 @@ const UjiAnova = () => {
     const f = totalSsb / swa;
 
     setAnova(f);
+    dispatch(changeDataAnova({ name: dataFix?.name, data: f }));
   };
   return (
     <Box>
@@ -104,14 +127,40 @@ const UjiAnova = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <CustomInput
-            type="number"
-            value={devider}
-            // error={isErrorName}
-            setValue={setDevider}
-            label="Pembagi "
-          />
+          <Typography sx={{ fontSize: "14px", mb: 1 }}>
+            Silahkan pilih data yang ingin di uji
+          </Typography>
+          <FormControl fullWidth variant="filled">
+            <InputLabel id="demo-simple-select-filled-label">
+              Data Uji
+            </InputLabel>
+            <Select
+              fullWidth
+              value={dataFix}
+              onChange={(e) => setDataFix(e.target.value)}
+            >
+              {datas?.map(
+                (item, idx) =>
+                  item?.data.length !== 0 && (
+                    <MenuItem value={item}>{item?.name}</MenuItem>
+                  )
+              )}
+              {/* <MenuItem value={"Benefit"}>Benefit</MenuItem> */}
+            </Select>
+          </FormControl>
         </Grid>
+
+        {dataFix !== null && (
+          <Grid item xs={12}>
+            <CustomInput
+              type="number"
+              value={devider}
+              // error={isErrorName}
+              setValue={setDevider}
+              label="Pembagi "
+            />
+          </Grid>
+        )}
 
         {dataDevided?.map((item, idx) => (
           <Grid item xs={6}>
