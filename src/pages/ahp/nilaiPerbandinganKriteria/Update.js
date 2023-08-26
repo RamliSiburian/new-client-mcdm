@@ -11,17 +11,20 @@ import {
   MenuItem,
   Select,
   Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { CloseIcon } from "../../../assets/icons";
-import CustomInput from "../../../components/common/atoms/CustomInput";
-import CustomButton from "../../../components/common/atoms/CustomButton";
-import { updateDataPerbandinganAhp } from "../../../config/perbandinganAhp";
-import { changeNilaiPerbandinganAhp } from "../../../store/perbandinganAhp/updatePerbandinganAhp";
-import { changeNilaiPerbandinganKriteriaAhp, getAllDataEditPerbandinganKriteriaAhp } from "../../../store/perbandinganKriteriaAhp/updatePerbandinganKriteriaAhp";
-import { updateDataPerbandinganCriteriaAhp } from "../../../config/perbandinganKkriteriaAhp";
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { CloseIcon } from '../../../assets/icons';
+import CustomInput from '../../../components/common/atoms/CustomInput';
+import CustomButton from '../../../components/common/atoms/CustomButton';
+import { updateDataPerbandinganAhp } from '../../../config/perbandinganAhp';
+import { changeNilaiPerbandinganAhp } from '../../../store/perbandinganAhp/updatePerbandinganAhp';
+import {
+  changeNilaiPerbandinganKriteriaAhp,
+  getAllDataEditPerbandinganKriteriaAhp,
+} from '../../../store/perbandinganKriteriaAhp/updatePerbandinganKriteriaAhp';
+import { updateDataPerbandinganCriteriaAhp } from '../../../config/perbandinganKkriteriaAhp';
 
 const UpdatePerbandinganKriteriaAhp = ({
   openUpdatePerbandinganKriteriaAhp,
@@ -44,7 +47,7 @@ const UpdatePerbandinganKriteriaAhp = ({
   };
 
   const handleSave = () => {
-    nilai === "" ? setIsErrorNilai(true) : setIsErrorNilai(false);
+    nilai === '' ? setIsErrorNilai(true) : setIsErrorNilai(false);
 
     const params = {};
     // params.kode = kode;
@@ -64,19 +67,19 @@ const UpdatePerbandinganKriteriaAhp = ({
       }
     };
 
-    nilai !== "" && saveData();
+    nilai !== '' && saveData();
   };
   return (
     <Dialog open={openUpdatePerbandinganKriteriaAhp} fullWidth>
       <DialogTitle>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Typography sx={{ fontSize: "16px", fontWeight: 600 }}>
+          <Typography sx={{ fontSize: '16px', fontWeight: 600 }}>
             Update Kriteria
           </Typography>
           <Typography onClick={handleClose}>
@@ -87,14 +90,14 @@ const UpdatePerbandinganKriteriaAhp = ({
       <Divider />
 
       <DialogContent>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <CustomInput value={deskripsi} disabled label={"deskripsi"} />
-          <CustomInput value={kode} label={"kode"} disabled />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <CustomInput value={deskripsi} disabled label={'deskripsi'} />
+          <CustomInput value={kode} label={'kode'} disabled />
           <CustomInput
             isError={isErrorNilai}
-            textError={"nilai tidak boleh kosong"}
+            textError={'nilai tidak boleh kosong'}
             value={nilai}
-            label={"nilai"}
+            label={'nilai'}
             onChange={(e) => {
               dispatch(changeNilaiPerbandinganKriteriaAhp(e.target.value));
             }}
@@ -105,12 +108,12 @@ const UpdatePerbandinganKriteriaAhp = ({
             handleButton={handleSave}
             title={
               isLoading ? (
-                <CircularProgress size={18} sx={{ color: "#FFF" }} />
+                <CircularProgress size={18} sx={{ color: '#FFF' }} />
               ) : (
-                "Save"
+                'Save'
               )
             }
-            sx={{ color: "#FFF" }}
+            sx={{ color: '#FFF' }}
           />
         </Box>
       </DialogContent>

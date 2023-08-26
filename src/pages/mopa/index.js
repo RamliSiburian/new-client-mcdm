@@ -9,23 +9,23 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@mui/material";
-import React from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+} from '@mui/material';
+import React from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchDataKriteria,
   getAllDataKriteria,
-} from "../../store/kriteria/KriteriaDatas";
+} from '../../store/kriteria/KriteriaDatas';
 import {
   changeJoinData,
   fetchDataAlternatif,
   getAllDataAlternatifState,
-} from "../../store/alternatif/AlternatifData";
-import { useState } from "react";
+} from '../../store/alternatif/AlternatifData';
+import { useState } from 'react';
 // import { PerbandinganBerpasangan } from "../../components/common/PerbandinganBerpasangan";
-import { changeNilaiAkhirMopa } from "../../store/mopa";
-import { getAllPerbandinganMopa } from "../../store/perbandinganMopa/perbandinganMopa";
+import { changeNilaiAkhirMopa } from '../../store/mopa';
+import { getAllPerbandinganMopa } from '../../store/perbandinganMopa/perbandinganMopa';
 
 const MOPA = () => {
   const { dataPerbandinganMopa, isLoading } = useSelector(
@@ -196,7 +196,7 @@ const MOPA = () => {
 
   const highestValue = newData?.map((subArray, idx) => {
     const cek = dataKriteria.some(
-      (item) => item.kode === kodeKriteria[idx] && item.kategory === "Cost"
+      (item) => item.kode === kodeKriteria[idx] && item.kategory === 'Cost'
     );
     return cek
       ? { cost: true, nilai: Math.min(...subArray) }
@@ -251,7 +251,7 @@ const MOPA = () => {
     <Grid container columns={12} spacing={3}>
       <Grid item xs={12}>
         <Box>
-          <Typography sx={{ fontWeight: 600, fontSize: "20px" }}>
+          <Typography sx={{ fontWeight: 600, fontSize: '20px' }}>
             Perhitungan Menggunakan metode MOPA
           </Typography>
           <Divider />
@@ -264,8 +264,8 @@ const MOPA = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "16px",
-              textDecoration: "underline",
+              fontSize: '16px',
+              textDecoration: 'underline',
             }}
           >
             Langkah I : Normalisasi
@@ -275,7 +275,7 @@ const MOPA = () => {
         <TableContainer sx={{ mt: 2 }}>
           <Table aria-label="simple table" size="small">
             <TableHead>
-              <TableRow sx={{ background: "#FAFAFA" }}>
+              <TableRow sx={{ background: '#FAFAFA' }}>
                 <TableCell align="left">Nama Alternatif</TableCell>
                 {kodeKriteria.map((kode, index) => (
                   <TableCell align="left" key={index}>
@@ -292,7 +292,7 @@ const MOPA = () => {
                   </TableCell>
                   {item?.nilai?.map((nilaiC, index) => (
                     <TableCell align="left" key={index}>
-                      {nilaiC || "-"}
+                      {nilaiC || '-'}
                       {/* {item.nilai[index]} */}
                     </TableCell>
                   ))}
@@ -309,8 +309,8 @@ const MOPA = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "16px",
-              textDecoration: "underline",
+              fontSize: '16px',
+              textDecoration: 'underline',
             }}
           >
             Langkah 2 : Perbandingan Berpasangan
@@ -334,7 +334,7 @@ const MOPA = () => {
                   {dataKriteria.map((item2, index2) => (
                     <TableCell key={item2.kode}>
                       {item2.bobot === item1.bobot ? (
-                        "1/1"
+                        '1/1'
                       ) : (
                         <>
                           {item1.bobot > item2.bobot
@@ -365,8 +365,8 @@ const MOPA = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "16px",
-              textDecoration: "underline",
+              fontSize: '16px',
+              textDecoration: 'underline',
             }}
           >
             Langkah 2.1 : Pembobotan
@@ -427,7 +427,7 @@ const MOPA = () => {
                   ))}
                 </TableRow>
               ))}
-              <TableRow sx={{ background: "#CFCFCF", fontWeight: 600 }}>
+              <TableRow sx={{ background: '#CFCFCF', fontWeight: 600 }}>
                 <TableCell sx={{ fontWeight: 600 }}>Total</TableCell>
                 {totalPerKolom.map((total, index) => (
                   <TableCell key={index} sx={{ fontWeight: 600 }}>
@@ -447,8 +447,8 @@ const MOPA = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "16px",
-              textDecoration: "underline",
+              fontSize: '16px',
+              textDecoration: 'underline',
             }}
           >
             Langkah 2.2 : Mencari Nilai rata-rata
@@ -495,8 +495,8 @@ const MOPA = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "16px",
-              textDecoration: "underline",
+              fontSize: '16px',
+              textDecoration: 'underline',
             }}
           >
             Langkah 3 : Normalisasi dan mencari nilai cost dan benefit
@@ -519,7 +519,7 @@ const MOPA = () => {
                   <TableCell align="left">{item.kode}</TableCell>
                   {item?.nilai?.map((nilaiC, index) => (
                     <TableCell align="left" key={index}>
-                      {nilaiC || "-"}
+                      {nilaiC || '-'}
                       {/* {item.nilai[index]} */}
                     </TableCell>
                   ))}
@@ -535,8 +535,8 @@ const MOPA = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "16px",
-              textDecoration: "underline",
+              fontSize: '16px',
+              textDecoration: 'underline',
             }}
           >
             Langkah 3.1 : Menghitung nilai cost dan benefit
@@ -589,8 +589,8 @@ const MOPA = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "16px",
-              textDecoration: "underline",
+              fontSize: '16px',
+              textDecoration: 'underline',
             }}
           >
             Langkah 4 : Perangkingan
@@ -600,7 +600,7 @@ const MOPA = () => {
         <TableContainer sx={{ mt: 2 }}>
           <Table size="small">
             <TableHead>
-              <TableRow sx={{ background: "#9D9D9D", fontWeight: 600 }}>
+              <TableRow sx={{ background: '#9D9D9D', fontWeight: 600 }}>
                 <TableCell sx={{ fontWeight: 600 }}>Alternatif</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Hasil Analisis</TableCell>
               </TableRow>
@@ -615,7 +615,7 @@ const MOPA = () => {
                         Math.max(...perangkingan) === perangkingan[idx] && 600,
                       background:
                         Math.max(...perangkingan) === perangkingan[idx] &&
-                        "#E9E9E9",
+                        '#E9E9E9',
                     }}
                   >
                     {item.kode}
@@ -627,7 +627,7 @@ const MOPA = () => {
                         Math.max(...perangkingan) === perangkingan[idx] && 600,
                       background:
                         Math.max(...perangkingan) === perangkingan[idx] &&
-                        "#E9E9E9",
+                        '#E9E9E9',
                     }}
                   >
                     {perangkingan[idx].toFixed(3)}

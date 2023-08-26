@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   CircularProgress,
@@ -14,13 +14,13 @@ import {
   MenuItem,
   Select,
   Typography,
-} from "@mui/material";
-import CustomInput from "../../../components/common/atoms/CustomInput";
-import { CloseIcon } from "../../../assets/icons";
-import CustomButton from "../../../components/common/atoms/CustomButton";
-import { createPerbandinganAhp } from "../../../config/perbandinganAhp";
-import { dataPerbandingan } from "../../../components/common/dataPerbandingan";
-import { createPerbandinganCriteriaAhp } from "../../../config/perbandinganKkriteriaAhp";
+} from '@mui/material';
+import CustomInput from '../../../components/common/atoms/CustomInput';
+import { CloseIcon } from '../../../assets/icons';
+import CustomButton from '../../../components/common/atoms/CustomButton';
+import { createPerbandinganAhp } from '../../../config/perbandinganAhp';
+import { dataPerbandingan } from '../../../components/common/dataPerbandingan';
+import { createPerbandinganCriteriaAhp } from '../../../config/perbandinganKkriteriaAhp';
 
 const data = dataPerbandingan;
 
@@ -32,7 +32,7 @@ const AddNilaiPerbandinganKriteria = ({
   const navigate = useNavigate();
 
   const [perbandingan, setPerbandingan] = useState(null);
-  const [nilai, setNilai] = useState("");
+  const [nilai, setNilai] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   //!   validation
@@ -50,7 +50,7 @@ const AddNilaiPerbandinganKriteria = ({
 
   const handleSave = () => {
     perbandingan === null ? setIsErrorName(true) : setIsErrorName(false);
-    nilai === "" ? setIsErrorBobot(true) : setIsErrorBobot(false);
+    nilai === '' ? setIsErrorBobot(true) : setIsErrorBobot(false);
 
     const params = {};
     params.kode = perbandingan?.kode;
@@ -64,25 +64,25 @@ const AddNilaiPerbandinganKriteria = ({
         setOpenAddNilaiKriteriaAhp(false);
         setIsLoading(false);
         setPerbandingan(null);
-        setNilai("");
+        setNilai('');
       } catch (err) {
         console.error(err);
       }
     };
 
-    perbandingan !== null && nilai !== "" && saveData();
+    perbandingan !== null && nilai !== '' && saveData();
   };
   return (
     <Dialog open={openAddNilaiKriteriaAhp} fullWidth>
       <DialogTitle>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Typography sx={{ fontSize: "16px", fontWeight: 600 }}>
+          <Typography sx={{ fontSize: '16px', fontWeight: 600 }}>
             Add Kriteria
           </Typography>
           <Typography onClick={handleClose}>
@@ -93,7 +93,7 @@ const AddNilaiPerbandinganKriteria = ({
       <Divider />
 
       <DialogContent>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <FormControl>
             <InputLabel id="select-label">Pilih Kategori</InputLabel>
             <Select
@@ -124,13 +124,13 @@ const AddNilaiPerbandinganKriteria = ({
             handleButton={handleSave}
             title={
               isLoading ? (
-                <CircularProgress size={18} sx={{ color: "#FFF" }} />
+                <CircularProgress size={18} sx={{ color: '#FFF' }} />
               ) : (
-                "Save"
+                'Save'
               )
             }
-            sxBox={{ background: "#303030" }}
-            sx={{ color: "#FFF" }}
+            sxBox={{ background: '#303030' }}
+            sx={{ color: '#FFF' }}
           />
         </Box>
       </DialogContent>
