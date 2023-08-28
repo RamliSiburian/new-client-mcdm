@@ -12,22 +12,28 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-} from '@mui/material';
-import Reac, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+} from "@mui/material";
+import Reac, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   changeJoinData,
   fetchDataAlternatif,
   getAllDataAlternatifState,
-} from '../../store/alternatif/AlternatifData';
+} from "../../store/alternatif/AlternatifData";
 import {
   fetchDataKriteria,
   getAllDataKriteria,
-} from '../../store/kriteria/KriteriaDatas';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { changeNilaiAkhirAHP } from '../../store/ahp';
-import { getAllPerbandinganAhp } from '../../store/perbandinganAhp/perbandinganAhp';
-import { getAllPerbandinganKriteriaAhp } from '../../store/perbandinganKriteriaAhp/perbandinganKriteriaAhp';
+} from "../../store/kriteria/KriteriaDatas";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { changeNilaiAkhirAHP } from "../../store/ahp";
+import {
+  fetchPerbandinganAhp,
+  getAllPerbandinganAhp,
+} from "../../store/perbandinganAhp/perbandinganAhp";
+import {
+  fetchPerbandinganKriteriaAhp,
+  getAllPerbandinganKriteriaAhp,
+} from "../../store/perbandinganKriteriaAhp/perbandinganKriteriaAhp";
 
 const AHP = () => {
   const { dataPerbandingan, isLoading } = useSelector(getAllPerbandinganAhp);
@@ -40,7 +46,12 @@ const AHP = () => {
   const dataKriteria = useSelector(getAllDataKriteria);
   const [newDataToShow, setNewDataToShow] = useState([]);
 
-  const [expanded, setExpanded] = useState('panel1');
+  const [expanded, setExpanded] = useState("panel1");
+
+  useEffect(() => {
+    dispatch(fetchPerbandinganAhp());
+    dispatch(fetchPerbandinganKriteriaAhp());
+  }, []);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -51,14 +62,12 @@ const AHP = () => {
 
     const bobot = Math.abs(item1 - item2);
 
-    const foundValue = dataPerbandinganKriteria.find(
+    const foundValue = dataPerbandinganKriteria?.find(
       (entry) => entry.nilai === parseFloat(bobot.toFixed(2))
     );
 
-    nilaiPerbandingan = foundValue.kode;
-
     if (foundValue) {
-      nilaiPerbandingan = foundValue.kode;
+      nilaiPerbandingan = foundValue?.kode;
     } else {
       nilaiPerbandingan = 1;
     }
@@ -83,7 +92,7 @@ const AHP = () => {
   }
 
   useEffect(() => {
-    const kode = dataKriteria.map((kode) => kode?.kode);
+    const kode = dataKriteria?.map((kode) => kode?.kode);
     setKodeKriteria(kode);
   }, [dataKriteria]);
 
@@ -134,15 +143,11 @@ const AHP = () => {
       return (
         total[index] +
         (item.bobot > item2.bobot
-          ? PerbandinganKriteriaAHP(
-              (item.bobot + 0.05 - item2.bobot).toFixed(2)
-            )
-          : PerbandinganKriteriaAHP(0.05)) /
+          ? PerbandinganKriteriaAHP((item.bobot - item2.bobot).toFixed(2))
+          : 1) /
           (item2.bobot > item.bobot
-            ? PerbandinganKriteriaAHP(
-                (item2.bobot + 0.05 - item.bobot).toFixed(2)
-              )
-            : PerbandinganKriteriaAHP(0.05))
+            ? PerbandinganKriteriaAHP((item2.bobot - item.bobot).toFixed(2))
+            : 1)
       );
     });
   }, new Array(dataKriteria.length).fill(0));
@@ -151,37 +156,25 @@ const AHP = () => {
     return dataKriteria.map((item2, index) => {
       return Number.isInteger(
         (total.bobot > item2.bobot
-          ? PerbandinganKriteriaAHP(
-              (total.bobot + 0.05 - item2.bobot).toFixed(2)
-            )
-          : PerbandinganKriteriaAHP(0.05)) /
+          ? PerbandinganKriteriaAHP((total.bobot - item2.bobot).toFixed(2))
+          : 1) /
           (item2.bobot > total.bobot
-            ? PerbandinganKriteriaAHP(
-                (item2.bobot + 0.05 - total.bobot).toFixed(2)
-              )
-            : PerbandinganKriteriaAHP(0.05))
+            ? PerbandinganKriteriaAHP((item2.bobot - total.bobot).toFixed(2))
+            : 1)
       )
         ? (total.bobot > item2.bobot
-            ? PerbandinganKriteriaAHP(
-                (total.bobot + 0.05 - item2.bobot).toFixed(2)
-              )
-            : PerbandinganKriteriaAHP(0.05)) /
+            ? PerbandinganKriteriaAHP((total.bobot - item2.bobot).toFixed(2))
+            : 1) /
             (item2.bobot > total.bobot
-              ? PerbandinganKriteriaAHP(
-                  (item2.bobot + 0.05 - total.bobot).toFixed(2)
-                )
-              : PerbandinganKriteriaAHP(0.05))
+              ? PerbandinganKriteriaAHP((item2.bobot - total.bobot).toFixed(2))
+              : 1)
         : (
             (total.bobot > item2.bobot
-              ? PerbandinganKriteriaAHP(
-                  (total.bobot + 0.05 - item2.bobot).toFixed(2)
-                )
-              : PerbandinganKriteriaAHP(0.05)) /
+              ? PerbandinganKriteriaAHP((total.bobot - item2.bobot).toFixed(2))
+              : 1) /
             (item2.bobot > total.bobot
-              ? PerbandinganKriteriaAHP(
-                  (item2.bobot + 0.05 - total.bobot).toFixed(2)
-                )
-              : PerbandinganKriteriaAHP(0.05))
+              ? PerbandinganKriteriaAHP((item2.bobot - total.bobot).toFixed(2))
+              : 1)
           ).toFixed(2);
     });
   });
@@ -248,7 +241,7 @@ const AHP = () => {
 
   const newCekMapAlt = cekMapAlt?.map((data, idx) => transposeData(data));
 
-  const totalPerbandinganAltKriteria = newCekMapAlt.map((matrix) => {
+  const totalPerbandinganAltKriteria = newCekMapAlt?.map((matrix) => {
     return matrix.map((col, colIndex) => {
       return matrix.reduce((acc, row) => {
         return acc + row[colIndex];
@@ -292,7 +285,7 @@ const AHP = () => {
   );
 
   const saveFinalResult = async () => {
-    const metode = 'ahp';
+    const metode = "ahp";
     const result = perangkingan;
 
     try {
@@ -315,7 +308,7 @@ const AHP = () => {
     <Grid container columns={12} spacing={2}>
       <Grid item xs={12}>
         <Box>
-          <Typography sx={{ fontWeight: 600, fontSize: '20px' }}>
+          <Typography sx={{ fontWeight: 600, fontSize: "20px" }}>
             Perhitungan Menggunakan metode AHP
           </Typography>
           <Divider />
@@ -325,9 +318,9 @@ const AHP = () => {
       {/* langkah 1 */}
       <Grid item xs={12}>
         <Accordion
-          sx={{ border: 'none', background: '#FAFAFA' }}
-          expanded={expanded === 'panel1'}
-          onChange={handleChange('panel1')}
+          sx={{ border: "none", background: "#FAFAFA" }}
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -337,8 +330,8 @@ const AHP = () => {
             <Typography
               sx={{
                 fontWeight: 500,
-                fontSize: '16px',
-                textDecoration: 'underline',
+                fontSize: "16px",
+                textDecoration: "underline",
               }}
             >
               Langkah I : Normalisasi
@@ -348,7 +341,7 @@ const AHP = () => {
             <TableContainer sx={{ mt: 2 }}>
               <Table aria-label="simple table" size="small">
                 <TableHead>
-                  <TableRow sx={{ background: '#FAFAFA' }}>
+                  <TableRow sx={{ background: "#FAFAFA" }}>
                     <TableCell align="left">Nama Alternatif</TableCell>
                     {kodeKriteria.map((kode, index) => (
                       <TableCell align="left" key={index}>
@@ -365,7 +358,7 @@ const AHP = () => {
                       </TableCell>
                       {item?.nilai?.map((nilaiC, index) => (
                         <TableCell align="left" key={index}>
-                          {nilaiC || '-'}
+                          {nilaiC || "-"}
                           {/* {item.nilai[index]} */}
                         </TableCell>
                       ))}
@@ -381,9 +374,9 @@ const AHP = () => {
       {/* langkah 2. */}
       <Grid item xs={12}>
         <Accordion
-          sx={{ border: 'none', background: '#FAFAFA' }}
-          expanded={expanded === 'panel2'}
-          onChange={handleChange('panel2')}
+          sx={{ border: "none", background: "#FAFAFA" }}
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -393,8 +386,8 @@ const AHP = () => {
             <Typography
               sx={{
                 fontWeight: 500,
-                fontSize: '16px',
-                textDecoration: 'underline',
+                fontSize: "16px",
+                textDecoration: "underline",
               }}
             >
               Langkah 2 : Perbandingan Berpasangan Kriteria
@@ -413,38 +406,32 @@ const AHP = () => {
                 </TableHead>
                 <TableBody>
                   {dataKriteria.map((item1, index1) => (
-                    <TableRow key={item1.kode}>
+                    <TableRow key={index1}>
                       <TableCell>{item1.kode}</TableCell>
                       {dataKriteria.map((item2, index2) => (
-                        <TableCell key={item2.kode}>
+                        <TableCell key={index2}>
                           {Number.isInteger(
                             (item1.bobot > item2.bobot
                               ? PerbandinganKriteriaAHP(
-                                  (item1.bobot + 0.05 - item2.bobot).toFixed(2)
+                                  (item1.bobot - item2.bobot).toFixed(2)
                                 )
-                              : PerbandinganKriteriaAHP(0.05)) /
+                              : 1) /
                               (item2.bobot > item1.bobot
                                 ? PerbandinganKriteriaAHP(
-                                    (item2.bobot + 0.05 - item1.bobot).toFixed(
-                                      2
-                                    )
+                                    (item2.bobot - item1.bobot).toFixed(2)
                                   )
-                                : PerbandinganKriteriaAHP(0.05))
+                                : 1)
                           )
                             ? (item1.bobot > item2.bobot
                                 ? PerbandinganKriteriaAHP(
-                                    (item1.bobot + 0.05 - item2.bobot).toFixed(
-                                      2
-                                    )
+                                    (item1.bobot - item2.bobot).toFixed(2)
                                   )
-                                : PerbandinganKriteriaAHP(0.05)) /
+                                : 1) /
                               (item2.bobot > item1.bobot
                                 ? PerbandinganKriteriaAHP(
-                                    (item2.bobot + 0.05 - item1.bobot).toFixed(
-                                      2
-                                    )
+                                    (item2.bobot - item1.bobot).toFixed(2)
                                   )
-                                : PerbandinganKriteriaAHP(0.05))
+                                : 1)
                             : (
                                 (item1.bobot > item2.bobot
                                   ? PerbandinganKriteriaAHP(
@@ -454,7 +441,7 @@ const AHP = () => {
                                         item2.bobot
                                       ).toFixed(2)
                                     )
-                                  : PerbandinganKriteriaAHP(0.05)) /
+                                  : 1) /
                                 (item2.bobot > item1.bobot
                                   ? PerbandinganKriteriaAHP(
                                       (
@@ -463,13 +450,13 @@ const AHP = () => {
                                         item1.bobot
                                       ).toFixed(2)
                                     )
-                                  : PerbandinganKriteriaAHP(0.05))
+                                  : 1)
                               ).toFixed(2)}
                         </TableCell>
                       ))}
                     </TableRow>
                   ))}
-                  <TableRow sx={{ background: '#CFCFCF', fontWeight: 600 }}>
+                  <TableRow sx={{ background: "#CFCFCF", fontWeight: 600 }}>
                     <TableCell sx={{ fontWeight: 600 }}>Total</TableCell>
                     {totalPerKolom.map((total, index) => (
                       <TableCell key={index} sx={{ fontWeight: 600 }}>
@@ -488,9 +475,9 @@ const AHP = () => {
       {/* langkah 2.1 */}
       <Grid item xs={12}>
         <Accordion
-          sx={{ border: 'none', background: '#FAFAFA' }}
-          expanded={expanded === 'panel3'}
-          onChange={handleChange('panel3')}
+          sx={{ border: "none", background: "#FAFAFA" }}
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -500,8 +487,8 @@ const AHP = () => {
             <Typography
               sx={{
                 fontWeight: 500,
-                fontSize: '16px',
-                textDecoration: 'underline',
+                fontSize: "16px",
+                textDecoration: "underline",
               }}
             >
               Langkah 2.1 : Nilai rata-rata
@@ -546,9 +533,9 @@ const AHP = () => {
 
       {/* langkah 3 */}
       {cekMapAlt?.map((kode, idxKode) => (
-        <Grid item xs={12}>
+        <Grid item xs={12} key={idxKode}>
           <Accordion
-            sx={{ border: 'none', background: '#FAFAFA' }}
+            sx={{ border: "none", background: "#FAFAFA" }}
             expanded={expanded === `panel1${idxKode + 4}`}
             onChange={handleChange(`panel1${idxKode + 4}`)}
           >
@@ -560,8 +547,8 @@ const AHP = () => {
               <Typography
                 sx={{
                   fontWeight: 500,
-                  fontSize: '16px',
-                  textDecoration: 'underline',
+                  fontSize: "16px",
+                  textDecoration: "underline",
                 }}
               >
                 Langkah 3 : Perbandingan Berpasangan Alternatif terhadap
@@ -583,14 +570,14 @@ const AHP = () => {
                   </TableHead>
                   <TableBody>
                     {newCekMapAlt[idxKode]?.map((data, idx) => (
-                      <TableRow>
+                      <TableRow key={idx}>
                         <TableCell>A{idx + 1}</TableCell>
                         {data?.map((nilai, indexN) => (
-                          <TableCell>{nilai.toFixed(2)}</TableCell>
+                          <TableCell key={indexN}>{nilai.toFixed(2)}</TableCell>
                         ))}
                       </TableRow>
                     ))}
-                    <TableRow sx={{ background: '#CFCFCF', fontWeight: 600 }}>
+                    <TableRow sx={{ background: "#CFCFCF", fontWeight: 600 }}>
                       <TableCell sx={{ fontWeight: 600 }}>Total</TableCell>
                       {totalPerbandinganAltKriteria[idxKode].map(
                         (total, index) => (
@@ -619,10 +606,10 @@ const AHP = () => {
                   </TableHead>
                   <TableBody>
                     {nilaiEigenTransposed[idxKode]?.map((data, idx) => (
-                      <TableRow>
+                      <TableRow key={idx}>
                         <TableCell>A{idx + 1}</TableCell>
                         {data?.map((nilai, indexN) => (
-                          <TableCell>{nilai.toFixed(2)}</TableCell>
+                          <TableCell key={indexN}>{nilai.toFixed(2)}</TableCell>
                         ))}
                         <TableCell>
                           {totalNilaiEigen[idxKode][idx].toFixed(2)}
@@ -646,8 +633,8 @@ const AHP = () => {
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: '16px',
-              textDecoration: 'underline',
+              fontSize: "16px",
+              textDecoration: "underline",
             }}
           >
             Langkah 4 : Perangkingan
@@ -657,21 +644,21 @@ const AHP = () => {
         <TableContainer sx={{ mt: 2 }}>
           <Table size="small">
             <TableHead>
-              <TableRow sx={{ background: '#9D9D9D', fontWeight: 600 }}>
+              <TableRow sx={{ background: "#9D9D9D", fontWeight: 600 }}>
                 <TableCell sx={{ fontWeight: 600 }}>Alternatif</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Hasil Analisis</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {perangkingan?.map((item, idx) => (
-                <TableRow>
+                <TableRow key={idx}>
                   <TableCell
                     sx={{
                       fontWeight:
                         Math.max(...perangkingan) === perangkingan[idx] && 600,
                       background:
                         Math.max(...perangkingan) === perangkingan[idx] &&
-                        '#E9E9E9',
+                        "#E9E9E9",
                     }}
                   >
                     {kodeAlt[idx]}
@@ -682,7 +669,7 @@ const AHP = () => {
                         Math.max(...perangkingan) === perangkingan[idx] && 600,
                       background:
                         Math.max(...perangkingan) === perangkingan[idx] &&
-                        '#E9E9E9',
+                        "#E9E9E9",
                     }}
                   >
                     {item.toFixed(3)}

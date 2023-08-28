@@ -24,7 +24,7 @@ export function PerbandinganAHP(item1 = 0, item2 = 0) {
   if (foundValue) {
     nilaiPerbandingan = foundValue.nilai;
   } else {
-    nilaiPerbandingan = 0; 
+    nilaiPerbandingan = 0;  
   }
 
   return nilaiPerbandingan;
