@@ -7,7 +7,7 @@ export const ujiAnovaState = createSlice({
   },
   reducers: {
     changeDataAnova: (state, action) => {
-      const { name, data } = action.payload;
+      const { name, data, pValue } = action.payload;
       const existingDataIndex = state.resultData?.findIndex(
         (item) => item.name === name
       );
@@ -15,7 +15,7 @@ export const ujiAnovaState = createSlice({
       if (existingDataIndex !== -1) {
         state.resultData[existingDataIndex].data = data;
       } else {
-        state.resultData.push({ name, data });
+        state.resultData.push({ name, data, pValue });
       }
     },
   },

@@ -34,6 +34,7 @@ const UjiAnova = () => {
   const [dataDevided, setDataDevided] = useState([]);
 
   const [anova, setAnova] = useState("");
+  const [pValue, setPValue] = useState("");
   const ahp = useSelector(getAllDataAHP);
   const mopa = useSelector(getDataMopa);
   const topsis = useSelector(getDataTopsis);
@@ -74,6 +75,58 @@ const UjiAnova = () => {
     setDataDevided(newData);
   };
 
+  const jStat = require("jstat");
+
+  function fOnewayAnova(groups) {
+    const groupMeans = groups.map(
+      (group) => group.reduce((sum, value) => sum + value, 0) / group.length
+    );
+    const totalMean =
+      groupMeans.reduce((sum, mean) => sum + mean, 0) / groupMeans.length;
+
+    const betweenGroupSumOfSquares = groupMeans.reduce(
+      (sum, mean, index) =>
+        sum + groups[index].length * Math.pow(mean - totalMean, 2),
+      0
+    );
+
+    const withinGroupSumOfSquares = groups.reduce((sum, group, index) => {
+      const groupMean = groupMeans[index];
+      const groupSumOfSquares = group.reduce(
+        (groupSum, value) => groupSum + Math.pow(value - groupMean, 2),
+        0
+      );
+      return sum + groupSumOfSquares;
+    }, 0);
+
+    const betweenGroupDegreesOfFreedom = groups.length - 1;
+    const withinGroupDegreesOfFreedom = groups.reduce(
+      (sum, group) => sum + group.length - 1,
+      0
+    );
+
+    const betweenGroupMeanSquare =
+      betweenGroupSumOfSquares / betweenGroupDegreesOfFreedom;
+    const withinGroupMeanSquare =
+      withinGroupSumOfSquares / withinGroupDegreesOfFreedom;
+
+    const fStatistic = betweenGroupMeanSquare / withinGroupMeanSquare;
+
+    // Calculate p-value
+    const pValue =
+      1 -
+      jStat.centralF.cdf(
+        fStatistic,
+        betweenGroupDegreesOfFreedom,
+        withinGroupDegreesOfFreedom
+      );
+
+    return {
+      F: fStatistic,
+      p_Value: pValue,
+    };
+  }
+
   const handleProses = () => {
     let startIndex = 0;
     const datas = dataDevided.map((item) => {
@@ -86,33 +139,42 @@ const UjiAnova = () => {
       return slicedData;
     });
 
-    const averages = datas.map(
-      (data, idx) => data.reduce((acc, num) => acc + num, 0) / data.length
+    const result = fOnewayAnova(datas);
+
+    // const averages = datas.map(
+    //   (data, idx) => data.reduce((acc, num) => acc + num, 0) / data.length
+    // );
+
+    // const totalAverages =
+    //   averages.reduce((acc, num) => acc + num, 0) / averages.length;
+
+    // const variants = datas.map((data, idx) =>
+    //   data.map((item, index) => Math.pow(item - averages[idx], 2))
+    // );
+
+    // const totalVariants = variants.map(
+    //   (data, idx) => data.reduce((acc, num) => acc + num, 0) / (data.length - 1)
+    // );
+    // const swa =
+    //   totalVariants.reduce((acc, num) => acc + num, 0) / totalVariants.length;
+
+    // const ssb = datas.map(
+    //   (data, idx) => data.length * Math.pow(averages[idx] - totalAverages, 2)
+    // );
+
+    // const totalSsb = ssb.reduce((acc, num) => acc + num, 0) / (ssb.length - 1);
+
+    // const f = totalSsb / swa;
+
+    setAnova(result.F);
+    setPValue(result.p_Value);
+    dispatch(
+      changeDataAnova({
+        name: dataFix?.name,
+        data: result.F,
+        pValue: result.p_Value,
+      })
     );
-
-    const totalAverages =
-      averages.reduce((acc, num) => acc + num, 0) / averages.length;
-
-    const variants = datas.map((data, idx) =>
-      data.map((item, index) => Math.pow(item - averages[idx], 2))
-    );
-
-    const totalVariants = variants.map(
-      (data, idx) => data.reduce((acc, num) => acc + num, 0) / (data.length - 1)
-    );
-    const swa =
-      totalVariants.reduce((acc, num) => acc + num, 0) / totalVariants.length;
-
-    const ssb = datas.map(
-      (data, idx) => data.length * Math.pow(averages[idx] - totalAverages, 2)
-    );
-
-    const totalSsb = ssb.reduce((acc, num) => acc + num, 0) / (ssb.length - 1);
-
-    const f = totalSsb / swa;
-
-    setAnova(f);
-    dispatch(changeDataAnova({ name: dataFix?.name, data: f }));
   };
   return (
     <Box>
@@ -186,7 +248,12 @@ const UjiAnova = () => {
         {anova !== "" && (
           <Grid item={12}>
             <Box>
-              <Typography sx={{ fontWeightL: 600 }}>F = {anova}</Typography>
+              <Typography sx={{ fontWeightL: 600 }}>
+                F-Statistic = {anova}
+              </Typography>
+              <Typography sx={{ fontWeightL: 600 }}>
+                P-Value = {pValue}
+              </Typography>
             </Box>
           </Grid>
         )}
