@@ -129,7 +129,9 @@ const UjiAnova = () => {
 
   const handleProses = () => {
     let startIndex = 0;
-    const datas = dataDevided.map((item) => {
+
+    const tempDevided = [{ data1: 7 }, { data2: 4 }, { data3: 7 }];
+    const datas = tempDevided.map((item) => {
       const sliceEnd = Object.values(item)[0];
       const slicedData = dataFix?.data?.slice(
         startIndex,
@@ -139,7 +141,19 @@ const UjiAnova = () => {
       return slicedData;
     });
 
-    const result = fOnewayAnova(datas);
+    const datas1 = dataDevided.map((item) => {
+      const sliceEnd = Object.values(item)[0];
+      const slicedData = dataFix?.data?.slice(
+        startIndex,
+        startIndex + sliceEnd
+      );
+      startIndex += sliceEnd;
+      return slicedData;
+    });
+    const result =
+      dataFix?.name === "saw" || dataFix?.name === "topsis"
+        ? fOnewayAnova(datas)
+        : fOnewayAnova(datas1);
 
     // const averages = datas.map(
     //   (data, idx) => data.reduce((acc, num) => acc + num, 0) / data.length

@@ -30,6 +30,8 @@ const Perbandingan = () => {
   const kodeAlt = joinData?.map((data) => data.kode);
   const anova = useSelector(getResultDataUji);
 
+  console.log({ topsis });
+
   // const first = data.slice(0, 7);
   // const second = data.slice(7, 12);
   // const third = data.slice(12);
