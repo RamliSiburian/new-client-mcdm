@@ -202,7 +202,7 @@ const Topsis = () => {
       <Grid item xs={12}>
         <Box>
           <Typography sx={{ fontWeight: 600, fontSize: "20px" }}>
-            Perhitungan Menggunakan metode MOPA
+            Perhitungan Menggunakan metode Topsis
           </Typography>
           <Divider />
         </Box>

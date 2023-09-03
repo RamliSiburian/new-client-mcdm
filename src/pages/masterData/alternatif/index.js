@@ -35,6 +35,8 @@ import {
   fetchDataKriteria,
   getAllDataKriteria,
 } from "../../../store/kriteria/KriteriaDatas";
+import UpdateAlternatif from "../../../components/common/alternatif/UpdateAlternatif";
+import { loadDataAlternatif } from "../../../store/alternatif/UpdateAlternatif";
 
 const Alternatif = () => {
   const [openAddAlternatif, setOpenAddAlternatif] = useState(false);
@@ -84,9 +86,11 @@ const Alternatif = () => {
 
   const handleUpdate = (item) => {
     dispatch(
-      changeLoadingDataAlternatif({
+      loadDataAlternatif({
         kode: item.kode,
         namaAlternatif: item.namaAlternatif,
+        kodeKriteria: item.kodeKriteria,
+        nilai: item.nilai,
       })
     );
     setOpenUpdateAlternatif(true);
@@ -318,9 +322,9 @@ const Alternatif = () => {
       <AddAlternatif
         {...{ openAddAlternatif, setOpenAddAlternatif, kodeKriteria }}
       />
-      {/* <UpdateAlternatif
+      <UpdateAlternatif
         {...{ openUpdateAlternatif, setOpenUpdateAlternatif }}
-      /> */}
+      />
 
       {/* dialog delete */}
 
