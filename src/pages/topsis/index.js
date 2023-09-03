@@ -94,8 +94,7 @@ const Topsis = () => {
   // normalisasi
   const normalisasi = newDataToShow?.map((item, idx) =>
     item?.nilai?.map(
-      (nilaiC, index) =>
-        (nilaiC / Math.sqrt(totalKuadratNilai[index])).toFixed(3) || "-"
+      (nilaiC, index) => nilaiC / Math.sqrt(totalKuadratNilai[index]) || "-"
     )
   );
 
@@ -105,7 +104,7 @@ const Topsis = () => {
   };
   const newData = transposeData(normalisasi);
   const normalisasiTerbobot = normalisasi.map((item, idx) =>
-    item?.map((nilai, idx) => (nilai * dataKriteria[idx]?.bobot).toFixed(3))
+    item?.map((nilai, idx) => nilai * dataKriteria[idx]?.bobot)
   );
 
   // matriks solusi ideal
