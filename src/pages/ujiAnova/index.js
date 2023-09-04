@@ -8,16 +8,16 @@ import {
   Select,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import CustomInput from "../../components/common/atoms/CustomInput";
-import CustomButton from "../../components/common/atoms/CustomButton";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllDataAHP } from "../../store/ahp";
-import { getAllDataMopa, getDataMopa } from "../../store/mopa";
-import { getDataTopsis } from "../../store/topsis";
-import { getDataSaw } from "../../store/saw";
-import { changeDataAnova } from "../../store/anova";
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import CustomInput from '../../components/common/atoms/CustomInput';
+import CustomButton from '../../components/common/atoms/CustomButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllDataAHP } from '../../store/ahp';
+import { getAllDataMopa, getDataMopa } from '../../store/mopa';
+import { getDataTopsis } from '../../store/topsis';
+import { getDataSaw } from '../../store/saw';
+import { changeDataAnova } from '../../store/anova';
 
 // const dataUji = [
 //   0.843267898, 0.8197365750000001, 0.608251303, 0.8207482024999999,
@@ -28,13 +28,13 @@ import { changeDataAnova } from "../../store/anova";
 
 const UjiAnova = () => {
   const dispatch = useDispatch();
-  const [devider, setDevider] = useState("");
+  const [devider, setDevider] = useState('');
   const [isDisableProses, setIsDisalbleProses] = useState(false);
 
   const [dataDevided, setDataDevided] = useState([]);
 
-  const [anova, setAnova] = useState("");
-  const [pValue, setPValue] = useState("");
+  const [anova, setAnova] = useState('');
+  const [pValue, setPValue] = useState('');
   const ahp = useSelector(getAllDataAHP);
   const mopa = useSelector(getDataMopa);
   const topsis = useSelector(getDataTopsis);
@@ -44,10 +44,10 @@ const UjiAnova = () => {
 
   useEffect(() => {
     const tempData = [
-      { name: "ahp", data: ahp },
-      { name: "mopa", data: mopa },
-      { name: "topsis", data: topsis },
-      { name: "saw", data: saw },
+      { name: 'ahp', data: ahp },
+      { name: 'mopa', data: mopa },
+      { name: 'topsis', data: topsis },
+      { name: 'saw', data: saw },
     ];
 
     setDatas(tempData);
@@ -55,14 +55,14 @@ const UjiAnova = () => {
 
   useEffect(() => {
     const dividedData = Array.from({ length: devider }, (_, index) => ({
-      [`data${index + 1}`]: "",
+      [`data${index + 1}`]: '',
     }));
 
     setDataDevided(dividedData);
   }, [devider]);
 
   useEffect(() => {
-    if (devider === "") {
+    if (devider === '') {
       setIsDisalbleProses(true);
     } else {
       setIsDisalbleProses(false);
@@ -75,7 +75,7 @@ const UjiAnova = () => {
     setDataDevided(newData);
   };
 
-  const jStat = require("jstat");
+  const jStat = require('jstat');
 
   function fOnewayAnova(groups) {
     const groupMeans = groups.map(
@@ -131,7 +131,8 @@ const UjiAnova = () => {
     let startIndex = 0;
 
     const tempDevided = [{ data1: 7 }, { data2: 4 }, { data3: 7 }];
-    const datas = tempDevided.map((item) => {
+
+    const datas1 = dataDevided?.map((item) => {
       const sliceEnd = Object.values(item)[0];
       const slicedData = dataFix?.data?.slice(
         startIndex,
@@ -141,24 +142,26 @@ const UjiAnova = () => {
       return slicedData;
     });
 
-    const datas1 = dataDevided.map((item) => {
+    let startIndexTemp = 0;
+
+    const datas = tempDevided.map((item) => {
       const sliceEnd = Object.values(item)[0];
       const slicedData = dataFix?.data?.slice(
-        startIndex,
-        startIndex + sliceEnd
+        startIndexTemp,
+        startIndexTemp + sliceEnd
       );
-      startIndex += sliceEnd;
+      startIndexTemp += sliceEnd;
       return slicedData;
     });
+
     const result =
-      dataFix?.name === "saw" || dataFix?.name === "topsis"
+      dataFix?.name === 'saw' || dataFix?.name === 'topsis'
         ? fOnewayAnova(datas)
         : fOnewayAnova(datas1);
 
     // const averages = datas.map(
     //   (data, idx) => data.reduce((acc, num) => acc + num, 0) / data.length
     // );
-
     // const totalAverages =
     //   averages.reduce((acc, num) => acc + num, 0) / averages.length;
 
@@ -195,7 +198,7 @@ const UjiAnova = () => {
       <Grid container columns={12} spacing={2}>
         <Grid item xs={12}>
           <Box>
-            <Typography sx={{ fontWeight: 600, fontSize: "20px" }}>
+            <Typography sx={{ fontWeight: 600, fontSize: '20px' }}>
               Uji Anova
             </Typography>
             <Divider />
@@ -203,7 +206,7 @@ const UjiAnova = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: "14px", mb: 1 }}>
+          <Typography sx={{ fontSize: '14px', mb: 1 }}>
             Silahkan pilih data yang ingin di uji
           </Typography>
           <FormControl fullWidth variant="filled">
@@ -255,11 +258,11 @@ const UjiAnova = () => {
             isButtonDisabled={isDisableProses}
             title="Proses"
             color="primary"
-            sx={{ fontSize: "14px", background: "#B11312", cursor: "pointer" }}
+            sx={{ fontSize: '14px', background: '#B11312', cursor: 'pointer' }}
             handleButton={handleProses}
           />
         </Grid>
-        {anova !== "" && (
+        {anova !== '' && (
           <Grid item={12}>
             <Box>
               <Typography sx={{ fontWeightL: 600 }}>
